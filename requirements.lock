@@ -20,6 +20,8 @@ ckzg==2.1.8
     # via eth-account
 click==8.4.2
     # via genvm-linter
+cloudpickle==3.1.2
+    # via -r requirements.txt
 colorama==0.4.6
     # via
     #   click
@@ -98,6 +100,8 @@ packaging==26.2
     # via pytest
 parsimonious==0.10.0
     # via eth-abi
+pillow==12.3.0
+    # via -r requirements.txt
 pluggy==1.6.0
     # via pytest
 propcache==0.5.2

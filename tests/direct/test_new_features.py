@@ -4,10 +4,10 @@ Tests for two new GenLayer features:
 2. Visual inputs - web.render(mode='screenshot') + exec_prompt(images=[...])
 
 Run with:
-    python3.12 -m pytest test/test_new_features.py -v
+    .venv/Scripts/python.exe -m pytest tests/direct/test_new_features.py -v
 
 Versions under test:
-    genlayer-test 0.25.0  (genlayer-py 0.9.0, genvm SDK v0.2.14 cached)
+    genlayer-test 0.29.2 (genlayer-py 0.18.0; GenVM SDK selected by Depends)
 
 Known limitations discovered during testing:
     - run_validator() works ONLY when the validator function does NOT call
@@ -207,7 +207,7 @@ def test_run_validator_with_football_bets_skips_gracefully(direct_vm, direct_dep
     """
     Document that strict_eq-based contracts (football_bets) DO capture validators,
     but run_validator() FAILS because strict_eq's validator calls spawn_sandbox,
-    which is unsupported in wasi_mock. This is a known v0.25.0 limitation.
+    which is unsupported in wasi_mock. This is a known v0.29.2 limitation.
     """
     direct_vm.mock_web(r".*bbc.*", {"status": 200, "body": "Spain 3-0 Italy"})
     direct_vm.mock_llm(r".*", '{"score": "3:0", "winner": 1}')
@@ -228,9 +228,11 @@ def test_run_validator_with_football_bets_skips_gracefully(direct_vm, direct_dep
     with pytest.raises((AssertionError, Exception)) as exc_info:
         direct_vm.run_validator()
 
-    assert "unknown type 14" in str(exc_info.value) or "sandbox" in str(exc_info.value).lower() or True, (
-        f"Got: {exc_info.value}"
-    )
+    error_message = str(exc_info.value)
+    assert (
+        "unknown type 14" in error_message
+        or "sandbox" in error_message.lower()
+    ), f"Unexpected validator failure: {error_message}"
     # Mark it as an expected known limitation
     pytest.xfail(
         "strict_eq validator uses spawn_sandbox which is unsupported in direct mode (wasi_mock)"
@@ -262,7 +264,7 @@ def test_web_render_screenshot_empty_bytes_causes_pil_error(direct_vm, direct_de
     Document wasi_mock bug: mock_web screenshot handler always returns b"" as
     image bytes regardless of what body was provided. SDK then calls
     PIL.Image.open(BytesIO(b"")) which raises PIL.UnidentifiedImageError.
-    This is a bug/limitation in genlayer-test 0.25.0.
+    This is a bug/limitation in genlayer-test 0.29.2.
     """
     direct_vm.mock_web(r".*", {"status": 200, "body": "anything"})
     direct_vm.mock_llm(r".*", "described")

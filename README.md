@@ -10,7 +10,10 @@ Windows.
 - Node.js 22 và GenLayer CLI 0.39.2.
 - Python 3.12 trong `.venv`.
 - Contract lint + semantic validation.
-- 43 direct-mode tests, gồm mock web/LLM.
+- 53 direct-mode tests pass và 1 known limitation xfail, gồm mock web/LLM,
+  validator và visual-input behavior.
+- 3 integration tests đã pass trên hosted Studionet ngày 2026-07-26
+  (`3 passed in 178.98s` qua lệnh npm chuẩn).
 - Next.js frontend và production build.
 - GenLayer MCP project config + script handshake kiểm tra tool list.
 - Transaction Kit core/React pin từ package branches chính thức.
@@ -35,6 +38,7 @@ Các lệnh dùng hàng ngày:
 ```powershell
 npm run lint:contracts
 npm run test:direct
+npm run test:integration:studionet
 npm run lint
 npm run build
 npm run check
@@ -55,15 +59,27 @@ Direct tests không cần Docker. Local Studio/localnet cần Docker Desktop:
 winget install --exact --id Docker.DockerDesktop `
   --accept-package-agreements --accept-source-agreements
 
+# Nếu Docker báo thiếu WSL (máy hiện tại chưa bật WSL):
+wsl --install --no-distribution
+
 # Sau khi chấp nhận UAC và reboot nếu Windows yêu cầu:
-npm run localnet:init
-npm run localnet:up
+npm run localnet:verify
 npm run localnet:stop
 ```
 
 Lần chạy tự động hiện tại dừng ở UAC với installer exit code `4294967291`;
 không coi Docker/localnet là đã cài cho đến khi `docker version` và
 `genlayer init --headless` cùng chạy thành công.
+
+`npm run localnet:verify` là luồng end-to-end: kiểm tra Docker, pin/init
+localnet `v0.65.0`, khởi động RPC, xác nhận chain id 61127 rồi chạy integration
+tests. Dùng lệnh trực tiếp nếu muốn tách từng bước:
+
+```powershell
+npm run localnet:init
+npm run localnet:up
+npm run test:integration:localnet
+```
 
 RPC mặc định:
 
@@ -84,8 +100,14 @@ genlayer deploy
 Integration tests:
 
 ```powershell
-.\.venv\Scripts\gltest.exe tests\integration -v -s --network studionet
+npm run test:integration:studionet
+npm run test:integration:localnet
 ```
+
+Studionet tự sinh tài khoản thử nghiệm và không cần private key hay Docker.
+Localnet cần Docker engine đang chạy. Các test network-backed chỉ chạy file
+`tests/integration/test_football_bets.py`; các kiểm thử `direct_vm` được đặt
+riêng dưới `tests/direct`.
 
 Testnet cần account riêng trong `.env`; không commit private key. Không ghi nhận
 contract address hoặc transaction hash nếu chưa có output/explorer evidence

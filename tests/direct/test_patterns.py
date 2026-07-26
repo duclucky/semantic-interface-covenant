@@ -4,7 +4,7 @@ test_patterns.py — Verify GenLayer intelligent contract patterns in direct mod
 Tests 7 patterns to confirm which work reliably for skill documentation.
 Run with: pytest tests/direct/test_patterns.py -v
 
-genlayer-test: 0.25.0
+genlayer-test: 0.29.2
 """
 import json
 import pytest

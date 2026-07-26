@@ -148,7 +148,23 @@ Nguồn:
 - [Getting Started with GenLayer](https://docs.genlayer.com/developers)
 - [Official GenLayer skills repository](https://github.com/genlayerlabs/skills)
 
-## 5. Gate còn cần quyền Administrator
+## 5. Bằng chứng runtime hosted
+
+Hosted Studionet không cần Docker và đã được dùng để kiểm chứng luồng runtime
+thật ngày 2026-07-26:
+
+```powershell
+npm run test:integration:studionet
+```
+
+Kết quả qua lệnh npm chuẩn: `3 passed in 178.98s`. Bộ test đã deploy
+`FootballBets`, gửi write transactions, chờ consensus/web+LLM resolution và
+đọc lại state cho ba kịch bản: thắng, hòa và dự đoán sai. Trong lúc chạy,
+boilerplate cũ bộc lộ API `default_account`/method invocation đã lỗi thời; test
+đã được chuyển sang `get_default_account()`, `.call()` và `.transact()` của
+`genlayer-test 0.29.2`.
+
+## 6. Gate còn cần quyền Administrator
 
 `genlayer init --headless` đã được chạy và thất bại chính xác vì Docker pipe
 `//./pipe/docker_engine` chưa tồn tại. Docker Desktop 4.83.0 được tải qua
@@ -160,10 +176,16 @@ winget install --exact --id Docker.DockerDesktop `
   --accept-package-agreements --accept-source-agreements
 ```
 
+Máy hiện cũng báo WSL chưa được cài. Nếu Docker yêu cầu WSL 2, chạy
+`wsl --install --no-distribution` trong PowerShell Administrator và reboot.
+
 Sau reboot nếu được yêu cầu, chỉ đánh dấu localnet sẵn sàng khi:
 
 ```powershell
 docker version
-genlayer init --headless
-genlayer up --headless
+npm run localnet:verify
 ```
+
+Script `localnet:verify` pin localnet `v0.65.0`, chờ RPC chain id 61127 và chạy
+cùng bộ integration test trên localnet. Có thể thêm `-- -StopAfter` nếu muốn
+dừng containers sau khi kiểm chứng.
