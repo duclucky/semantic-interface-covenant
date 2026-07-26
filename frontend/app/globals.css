@@ -178,7 +178,7 @@
 
   body {
     @apply text-foreground;
-    font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: var(--font-body), 'Segoe UI', Arial, sans-serif;
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
