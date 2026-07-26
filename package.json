@@ -1,0 +1,29 @@
+{
+  "name": "genlayer-project",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "lint": "cd frontend && npm run lint",
+    "lint:contracts": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/lint-contracts.ps1",
+    "test:direct": ".venv\\Scripts\\python.exe -m pytest tests\\direct -v",
+    "check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1",
+    "setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup.ps1",
+    "mcp:verify": "node scripts/verify-mcp.mjs",
+    "localnet:init": "genlayer init --headless",
+    "localnet:up": "genlayer up --headless",
+    "localnet:stop": "genlayer stop",
+    "deploy": "genlayer deploy"
+  },
+  "devDependencies": {
+    "genlayer-js": "git+https://github.com/genlayerlabs/genlayer-js.git#50a936c4f0e436739851c8a4c47badcdd8c588dd"
+  },
+  "overrides": {
+    "brace-expansion": "5.0.8"
+  }
+}

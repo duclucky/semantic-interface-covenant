@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Quality (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.lock
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.lock
+
+      - name: Lint and validate every contract
+        shell: pwsh
+        run: |
+          $env:PYTHONUTF8 = "1"
+          Get-ChildItem contracts -Filter *.py -File |
+            Where-Object { $_.Name -ne "__init__.py" } |
+            ForEach-Object {
+              genvm-lint check $_.FullName
+              if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            }
+
+      - name: Run direct-mode tests
+        run: python -m pytest tests/direct -v
+
+      - name: Route public GitHub Git dependencies over HTTPS
+        shell: pwsh
+        run: |
+          git config --local --replace-all url."https://github.com/".insteadOf "ssh://git@github.com/"
+          git config --local --add url."https://github.com/".insteadOf "git@github.com:"
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Typecheck frontend
+        run: npm run lint
+
+      - name: Build frontend
+        run: npm run build
