@@ -131,7 +131,7 @@ python-dotenv==1.2.2
     #   genlayer-test
 pyunormalize==17.0.0
     # via web3
-pywin32==312
+pywin32==312 ; sys_platform == "win32"
     # via web3
 pyyaml==6.0.3
     # via genlayer-test
