@@ -68,8 +68,8 @@ Reuse surface:
 ### Luật so sánh
 
 - Giống từ bốn chiều trở lên: mặc định trùng.
-- Thay football bằng insurance, DAO bằng marketplace, hoặc API bằng website
-  không làm thành ý tưởng mới nếu decision/state/consequence giữ nguyên.
+- Thay tên ngành hoặc đổi lớp giao diện không làm thành ý tưởng mới nếu
+  decision/state/consequence giữ nguyên.
 - Thêm reputation, appeal hoặc dashboard vào một generic oracle không tự tạo
   ra primitive mới.
 - Multi-contract chỉ có giá trị khi các contract có trách nhiệm độc lập; tách

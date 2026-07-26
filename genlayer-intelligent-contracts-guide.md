@@ -197,7 +197,7 @@ GenLayer Foundation vận hành một **Points Program** khuyến khích đóng 
 1. **Lập profile trên Portal**, connect ví + GitHub/Discord/Twitter để đóng góp được ghi nhận và mở mission.
 2. **Star repo GitHub của GenLayer** — điểm khởi đầu nhanh.
 3. **Lấy testnet token** từ faucet (không cần tiền thật).
-4. **Phát triển contract** bằng Python trong Studio/CLI. Ví dụ mẫu tham khảo: Storage, LLM Hello World, Wizard of Coin, Fetch Web Content, Fetch GitHub Profile, Football Prediction Market, Vector Store Log Indexer.
+4. **Phát triển contract** bằng Python trong Studio/CLI. Ví dụ mẫu tham khảo: Storage, LLM Hello World, Wizard of Coin, Fetch Web Content, Fetch GitHub Profile, Prediction Market, Vector Store Log Indexer.
 5. **Deploy & ghi nhận on-chain**, đối chiếu Studio vs Bradbury.
 6. **(Tùy chọn)** xây dApp bằng GenLayerJS.
 7. **Nộp qua Portal dashboard** (Submit Contribution) với evidence: link repo + demo; hoặc nộp hackathon (DoraHacks) với GitHub link + demo video.

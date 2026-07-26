@@ -46,12 +46,6 @@ jobs:
       - name: Run direct-mode tests
         run: python -m pytest tests/direct -v
 
-      - name: Route public GitHub Git dependencies over HTTPS
-        shell: pwsh
-        run: |
-          git config --local --replace-all url."https://github.com/".insteadOf "ssh://git@github.com/"
-          git config --local --add url."https://github.com/".insteadOf "git@github.com:"
-
       - name: Install Node dependencies
         run: npm ci
 

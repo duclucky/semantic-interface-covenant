@@ -201,12 +201,10 @@ npm run check
 
 Kết quả:
 
-- `FootballBets`: lint pass;
-- `PatternTest`: lint pass;
 - `SemanticInterfaceCovenant`: lint pass;
 - `ToolRouterGuard`: lint pass;
-- 74 direct tests pass;
-- 1 xfail đã biết trong test cũ về `strict_eq`/sandbox của direct-mode upstream;
+- 21 direct tests pass;
+- không có test fail hoặc xfail;
 - frontend TypeScript `tsc --noEmit` pass;
 - Next.js production build pass.
 

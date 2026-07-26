@@ -1,148 +1,211 @@
-# GenLayer Development Workspace
+# Semantic Interface Covenant
 
-Môi trường Windows-first để nghiên cứu, viết, test, deploy Intelligent Contract
-và xây dApp GenLayer. Workspace dựa trên boilerplate chính thức, có thêm Codex
-MCP, Transaction Kit, tài liệu nghiên cứu và các workaround đã kiểm chứng trên
-Windows.
+A reusable GenLayer Intelligent Contract primitive for protecting APIs, MCP
+servers, and agent tools against semantic breaking changes.
 
-## Trạng thái hiện tại
+Providers and integrators agree to versioned behavioral guarantees and lock GEN
+bonds. If an interface changes, GenLayer validators independently fetch
+allowlisted public evidence and decide whether the change is `COMPATIBLE`,
+`DEGRADED`, `BREAKING`, or `UNVERIFIABLE`. A finalized verdict directly changes
+binding state, settles bonded value, and can quarantine or restore a subscribed
+consumer contract.
 
-- Node.js 22 và GenLayer CLI 0.39.2.
-- Python 3.12 trong `.venv`.
-- Contract lint + semantic validation.
-- 74 direct-mode tests pass và 1 known limitation xfail, gồm mock web/LLM,
-  validator, visual-input behavior, 14 tests cho
-  `SemanticInterfaceCovenant` và 7 tests cho consumer `ToolRouterGuard`.
-- 3 integration tests đã pass trên hosted Studionet ngày 2026-07-26
-  (`3 passed in 178.98s` qua lệnh npm chuẩn).
-- Next.js frontend và production build, gồm workbench `/covenant` đọc/ghi state
-  thật và theo dõi transaction qua `submitted → decided → finalized`.
-- GenLayer MCP project config + script handshake kiểm tra tool list.
-- Transaction Kit core/React pin từ package branches chính thức.
-- Hosted Docs MCP đã ghi cấu hình nhưng tắt vì endpoint đang trả HTTP 502.
-- Localnet Docker chưa khả dụng trên máy hiện tại: Docker Desktop installer đã
-  tải và xác minh nhưng cần Administrator/UAC để hoàn tất.
+## Live Studionet deployment
 
-## Bắt đầu nhanh
+Network: Studionet, chain ID `61999`.
 
-Mở PowerShell tại repository:
+| Contract | Address | Deploy transaction |
+|---|---|---|
+| `SemanticInterfaceCovenant` | [`0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570`](https://explorer-studio.genlayer.com/address/0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570) | [`0xd6cc527f...b48a47`](https://explorer-studio.genlayer.com/tx/0xd6cc527f3e0382c41da91e235d969b632bcb023a082bae8c6e1e921c22b48a47) |
+| `ToolRouterGuard` | [`0xA58132c068E0406E2d5d43E8b72E2b2361ac057D`](https://explorer-studio.genlayer.com/address/0xA58132c068E0406E2d5d43E8b72E2b2361ac057D) | [`0x972bdc31...f1b8e`](https://explorer-studio.genlayer.com/tx/0x972bdc31463fe87b9cb633e0739c1357b41f9c23e043490ebd8c05c4234f1b8e) |
+
+The recorded lifecycle finalized all of the following:
+
+- two different EOAs acting as provider and integrator;
+- provider and challenge bonds funded with GEN;
+- validator web/LLM adjudication over commit-pinned public source code;
+- `BREAKING / CRITICAL / SUFFICIENT` verdict for guarantee `method-key`;
+- binding and guard transition `ACTIVE → QUARANTINED`;
+- protected route rejection while quarantined;
+- `1 GEN` service-credit settlement;
+- validator-adjudicated cure and restoration to `ACTIVE`;
+- successful route after restoration;
+- withdrawal of `1.1 GEN`, confirmed by wallet balance change.
+
+The complete addresses, transaction hashes, finalized timestamps, verdicts,
+state snapshots, accounting, and balance evidence are in
+[deployment.json](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/evidence/studionet/deployment.json).
+
+## Why GenLayer is required
+
+An interface can still return HTTP 200 and schema-valid data while silently
+changing the meaning of a field, unit, method, tool instruction, or error
+behavior. The provider benefits from calling the release compatible; the
+integrator may benefit from calling it breaking. A signed database records who
+wrote a claim, but it cannot neutrally adjudicate that conflict.
+
+The contract does not accept a precomputed score or verdict. Validators fetch
+the configured evidence and perform the semantic decision inside GenVM. The
+consensus result controls on-chain state, value settlement, and consumer
+enforcement.
+
+## Architecture
+
+```text
+Provider + Integrator
+        │
+        │ guarantees, source rules, GEN bonds
+        ▼
+SemanticInterfaceCovenant
+        │
+        ├── validators fetch public evidence
+        ├── equivalence over critical verdict fields
+        ├── binding state + settlement
+        │
+        └── finalized on_covenant_status message
+                         │
+                         ▼
+                   ToolRouterGuard
+                         │
+                         └── allow or reject protected route
+```
+
+The reusable consumer surface is intentionally small:
+
+```text
+get_binding_status(binding_id)
+```
+
+or:
+
+```text
+on_covenant_status(binding_id, verdict_id, new_status)
+```
+
+See [INTEGRATION.md](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/INTEGRATION.md)
+for the pull, push, settlement, and fail-closed integration patterns.
+
+## Repository layout
+
+```text
+contracts/
+  semantic_interface_covenant.py   # reusable primitive
+  tool_router_guard.py             # reference enforcement consumer
+tests/direct/
+  test_semantic_interface_covenant.py
+  test_tool_router_guard.py
+frontend/
+  app/page.tsx                     # project landing page
+  app/covenant/page.tsx            # real read/write workbench
+scripts/
+  deploy-idea001-studionet.mjs     # resumable two-wallet lifecycle
+docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/
+  README.md                        # specification and threat model
+  INTEGRATION.md                   # builder integration guide
+  SUBMISSION.md                    # reviewer-facing explanation
+  DEPLOYMENT.md                    # deployment and evidence runbook
+  evidence/studionet/              # network-specific real evidence
+```
+
+## Setup
+
+Requirements:
+
+- Node.js 22;
+- Python 3.12;
+- PowerShell;
+- `uv`;
+- GenLayer CLI.
+
+From the repository root on Windows:
 
 ```powershell
 npm run setup
 ```
 
-Lệnh này cài/đồng bộ Python 3.12, `.venv`, Python dependencies, Node
-dependencies, tạo `frontend/.env` từ file mẫu nếu chưa có, rồi chạy toàn bộ
-verification.
-
-Các lệnh dùng hàng ngày:
+Or install manually:
 
 ```powershell
-npm run lint:contracts
-npm run test:direct
-npm run test:integration:studionet
-npm run lint
-npm run build
+uv venv --python 3.12 .venv
+uv pip install --python .venv\Scripts\python.exe -r requirements.lock
+npm install
 npm run check
-npm run mcp:verify
+```
+
+`npm run check`:
+
+1. validates every contract with `genvm-lint`;
+2. runs all direct-mode tests;
+3. typechecks the frontend;
+4. creates a production Next.js build.
+
+## Frontend
+
+Copy public configuration:
+
+```powershell
+Copy-Item frontend\.env.example frontend\.env
 npm run dev
 ```
 
-Frontend:
+Open:
 
-- app mẫu: `http://localhost:3000`
-- Semantic Interface Covenant: `http://localhost:3000/covenant`
-- Transaction Kit lab: `http://localhost:3000/transaction-kit`
+- landing page: `http://localhost:3000`;
+- covenant workbench: `http://localhost:3000/covenant`.
 
-## Localnet và network
+The workbench reads canonical contract state and implements the real transaction
+lifecycle:
 
-Direct tests không cần Docker. Local Studio/localnet cần Docker Desktop:
-
-```powershell
-winget install --exact --id Docker.DockerDesktop `
-  --accept-package-agreements --accept-source-agreements
-
-# Nếu Docker báo thiếu WSL (máy hiện tại chưa bật WSL):
-wsl --install --no-distribution
-
-# Sau khi chấp nhận UAC và reboot nếu Windows yêu cầu:
-npm run localnet:verify
-npm run localnet:stop
+```text
+SUBMITTING → SUBMITTED → DECIDED → FINALIZED → READING_STATE → COMPLETE
 ```
 
-Lần chạy tự động hiện tại dừng ở UAC với installer exit code `4294967291`;
-không coi Docker/localnet là đã cài cho đến khi `docker version` và
-`genlayer init --headless` cùng chạy thành công.
+It does not use localStorage or static transaction hashes as on-chain state.
 
-`npm run localnet:verify` là luồng end-to-end: kiểm tra Docker, pin/init
-localnet `v0.65.0`, khởi động RPC, xác nhận chain id 61127 rồi chạy integration
-tests. Dùng lệnh trực tiếp nếu muốn tách từng bước:
+## Deployment and live lifecycle
 
-```powershell
-npm run localnet:init
-npm run localnet:up
-npm run test:integration:localnet
+Root `.env` is Git-ignored. Never commit real values:
+
+```dotenv
+STUDIONET_PRIVATE_KEY=
+STUDIONET_INTEGRATOR_PRIVATE_KEY=
 ```
 
-RPC mặc định:
+The provider and integrator keys must represent different accounts.
 
-- localnet: `http://127.0.0.1:4000/api`
-- hosted Studionet: `https://studio.genlayer.com/api`
-
-Không trộn contract address, balance, ví hoặc evidence giữa các network.
-
-## Deploy
-
-Sau khi localnet/Studionet hoạt động:
+Available commands:
 
 ```powershell
-genlayer network
-genlayer deploy
+node scripts/deploy-idea001-studionet.mjs inspect
+node scripts/deploy-idea001-studionet.mjs deploy-primitive
+node scripts/deploy-idea001-studionet.mjs deploy-guard
+node scripts/deploy-idea001-studionet.mjs setup-provider
+node scripts/deploy-idea001-studionet.mjs fund-integrator
+node scripts/deploy-idea001-studionet.mjs run-demo
 ```
 
-Integration tests:
+The script resumes from the recorded evidence instead of blindly replaying
+already-finalized value-bearing transactions.
 
-```powershell
-npm run test:integration:studionet
-npm run test:integration:localnet
-```
+## Documentation
 
-Studionet tự sinh tài khoản thử nghiệm và không cần private key hay Docker.
-Localnet cần Docker engine đang chạy. Các test network-backed chỉ chạy file
-`tests/integration/test_football_bets.py`; các kiểm thử `direct_vm` được đặt
-riêng dưới `tests/direct`.
+- [Full specification and threat model](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/README.md)
+- [Implementation status](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/IMPLEMENTATION.md)
+- [Builder integration guide](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/INTEGRATION.md)
+- [Submission notes](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/SUBMISSION.md)
+- [Deployment runbook](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/DEPLOYMENT.md)
+- [Idea registry and anti-duplicate fingerprint](docs/IDEA-REGISTRY.md)
 
-Testnet cần account riêng trong `.env`; không commit private key. Không ghi nhận
-contract address hoặc transaction hash nếu chưa có output/explorer evidence
-thật.
+## Scope honesty
 
-## MCP trong Codex
+- The full contract lifecycle is verified on Studionet.
+- Asimov and Bradbury deployments are not claimed.
+- The frontend has performed live Studionet reads. Browser-wallet write evidence
+  remains explicitly pending until a MetaMask-capable browser session is
+  available.
+- `ToolRouterGuard` is the included reference adopter; no independent external
+  adopter is claimed yet.
 
-Trust repository rồi restart task để Codex nạp `.codex/config.toml`. Kiểm tra
-server cục bộ độc lập:
+## License
 
-```powershell
-npm run mcp:verify
-```
-
-`genlayer-mcp` là experimental; mọi code sinh ra phải qua `npm run check`.
-
-## Dependency audit
-
-`npm audit --omit=dev` hiện còn 3 high advisories trong dependency nội bộ
-`postcss`/`sharp` của Next.js 16.2.12. Đây là bản Next stable mới nhất tại lúc
-kiểm tra; đề xuất tự động duy nhất của npm là `--force` hạ xuống Next 9.3.3,
-một thay đổi breaking nên không được áp dụng. Không còn advisory critical.
-
-## Tài liệu
-
-- [Idea Registry — nguồn chuẩn để chống trùng ý tưởng](docs/IDEA-REGISTRY.md)
-- [IDEA-001 — Semantic Interface Covenant](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/README.md)
-- [Nghiên cứu CDK, MCP, Transaction Kit](docs/05-CDK-MCP-TRANSACTION-KIT.md)
-- [Tổng quan GenLayer](docs/00-TONG-QUAN-GENLAYER.md)
-- [Quy trình build và nộp](docs/01-QUY-TRINH-BUILD-VA-NOP.md)
-- [Checklist](docs/03-CHECKLIST-TRUOC-KHI-NOP.md)
-
-Một số tài liệu cũ trong repository ghi quy tắc header/version từ các bản Studio
-trước. Khi có xung đột, ưu tiên source boilerplate hiện tại, linter hiện tại và
-tài liệu chính thức mới nhất.
+[MIT](LICENSE)

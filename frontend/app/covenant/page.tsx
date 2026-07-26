@@ -410,7 +410,7 @@ export default function CovenantPage() {
             </a>
             <h1 className="text-lg font-semibold">Semantic Interface Covenant</h1>
           </div>
-          <AccountPanel context="covenant" />
+          <AccountPanel />
         </div>
       </header>
 

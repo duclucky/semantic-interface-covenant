@@ -1,7 +1,7 @@
 {
-  "name": "GenLayer Football Market",
-  "short_name": "GenLayer Market",
-  "description": "AI-powered football match predictions on GenLayer blockchain",
+  "name": "Semantic Interface Covenant",
+  "short_name": "Covenant",
+  "description": "Bonded semantic interface guarantees enforced by GenLayer validators",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

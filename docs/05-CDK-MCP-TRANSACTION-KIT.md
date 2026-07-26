@@ -99,35 +99,10 @@ Repository chính thức `genlayer-transaction-kit` cung cấp:
 - hỗ trợ ví EIP-1193, không bắt buộc MetaMask;
 - developer fee profile đo offline từ test.
 
-Đây vẫn là Stage 1/pre-release. Các package chưa xuất hiện trên npm registry ở
-lần kiểm tra này, nên workspace pin trực tiếp official package branches:
-
-```json
-{
-  "@genlayer/transaction-kit":
-    "https://codeload.github.com/genlayerlabs/genlayer-transaction-kit/tar.gz/7a32d40a...",
-  "@genlayer/transaction-kit-react":
-    "https://codeload.github.com/genlayerlabs/genlayer-transaction-kit/tar.gz/1b9fcf73..."
-}
-```
-
-Các Transaction Kit commit được pin qua HTTPS tarball thay vì bám branch.
-`genlayer-js` v2 cần chạy bước build của Git package nên được pin theo commit
-Git; npm biểu diễn dependency này thành Git SSH trong lock. Script setup thêm
-repo-local Git rewrite sang HTTPS để máy mới và CI không cần GitHub SSH key.
-
-Route `frontend/app/transaction-kit/page.tsx` dùng mock adapter chính thức để
-kiểm tra UI không cần ví hoặc contract address. Helper
-`frontend/lib/transaction-kit/client.ts` tạo kit thật từ EIP-1193 provider.
-
-Kết quả browser test: panel estimate hiển thị fee/caps/fingerprint, nút
-`Approve & sign` chuyển qua submitted -> decided/accepted -> finalized, không
-có browser console error.
-
-Audit dependency sau khi bỏ các gói Wagmi không được source sử dụng và cập nhật
-Next/viem: từ 46 advisories (có 1 critical) còn 3 high, đều nằm trong
-`postcss`/`sharp` nội bộ của Next 16.2.12. Không dùng `npm audit fix --force`
-vì npm đề xuất hạ Next xuống 9.3.3.
+Đây vẫn là Stage 1/pre-release. Ghi chú này chỉ lưu kết quả khảo sát tooling;
+project `Semantic Interface Covenant` không cài Transaction Kit và không chứa
+mock transaction route. Frontend dự án dùng `genlayer-js` trực tiếp để estimate,
+gửi giao dịch, chờ `ACCEPTED`/`FINALIZED` và đọc lại canonical state.
 
 Nguồn:
 
@@ -150,19 +125,12 @@ Nguồn:
 
 ## 5. Bằng chứng runtime hosted
 
-Hosted Studionet không cần Docker và đã được dùng để kiểm chứng luồng runtime
-thật ngày 2026-07-26:
-
-```powershell
-npm run test:integration:studionet
-```
-
-Kết quả qua lệnh npm chuẩn: `3 passed in 178.98s`. Bộ test đã deploy
-`FootballBets`, gửi write transactions, chờ consensus/web+LLM resolution và
-đọc lại state cho ba kịch bản: thắng, hòa và dự đoán sai. Trong lúc chạy,
-boilerplate cũ bộc lộ API `default_account`/method invocation đã lỗi thời; test
-đã được chuyển sang `get_default_account()`, `.call()` và `.transact()` của
-`genlayer-test 0.29.2`.
+Hosted Studionet không cần Docker và đã được dùng để kiểm chứng full lifecycle
+thật ngày 2026-07-26 cho `SemanticInterfaceCovenant` và `ToolRouterGuard`.
+Validators đọc public evidence, phán `BREAKING`, quarantine consumer, quyết
+toán GEN, sau đó phán cure và restore route. Toàn bộ transaction/finality/state
+evidence nằm tại
+`docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/evidence/studionet/deployment.json`.
 
 ## 6. Gate còn cần quyền Administrator
 
@@ -179,13 +147,14 @@ winget install --exact --id Docker.DockerDesktop `
 Máy hiện cũng báo WSL chưa được cài. Nếu Docker yêu cầu WSL 2, chạy
 `wsl --install --no-distribution` trong PowerShell Administrator và reboot.
 
-Sau reboot nếu được yêu cầu, chỉ đánh dấu localnet sẵn sàng khi:
+Sau reboot nếu được yêu cầu, chỉ đánh dấu Docker/localnet sẵn sàng khi:
 
 ```powershell
 docker version
-npm run localnet:verify
+genlayer init --headless
+genlayer up --headless
 ```
 
-Script `localnet:verify` pin localnet `v0.65.0`, chờ RPC chain id 61127 và chạy
-cùng bộ integration test trên localnet. Có thể thêm `-- -StopAfter` nếu muốn
-dừng containers sau khi kiểm chứng.
+Project hiện không giữ integration runner của boilerplate. Mọi localnet
+lifecycle mới phải được viết riêng cho `SemanticInterfaceCovenant` và lưu
+evidence tách biệt với Studionet.

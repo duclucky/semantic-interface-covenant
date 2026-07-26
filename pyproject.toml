@@ -1,5 +1,2 @@
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-markers = [
-    "integration: tests requiring GenLayer Studio (run with gltest)",
-]
+testpaths = ["tests/direct"]

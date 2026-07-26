@@ -55,13 +55,6 @@ try {
         throw "Failed to install Python dependencies."
     }
 
-    # The pre-release Transaction Kit names genlayer-js with GitHub shorthand.
-    # npm records that nested dependency as git+ssh even though it is public.
-    # Rewrite only GitHub SSH URLs, at repository scope, so fresh machines and
-    # CI can install without an SSH key.
-    git config --local --replace-all url."https://github.com/".insteadOf "ssh://git@github.com/"
-    git config --local --add url."https://github.com/".insteadOf "git@github.com:"
-
     npm install
     if ($LASTEXITCODE -ne 0) {
         throw "Failed to install Node dependencies."

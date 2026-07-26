@@ -94,8 +94,8 @@ case; consumer đọc `get_binding_status` hoặc subscribe để pause một de
 
 ## 4. Vì sao đây là một primitive, không phải app một lần
 
-Primitive không biết “campaign”, “leaderboard”, “football”, “insurance” hay
-“bounty”. Nó chuẩn hóa một protocol có thể dùng lại:
+Primitive không phụ thuộc một campaign, bảng điểm, ngành hoặc loại bounty cụ
+thể. Nó chuẩn hóa một protocol có thể dùng lại:
 
 1. đăng một versioned interface covenant;
 2. tạo bilateral binding có bond và consequence policy;
@@ -639,9 +639,8 @@ Dừng hoặc thu hẹp ý tưởng nếu:
 - frontend `/covenant` dùng GenLayer SDK thật cho read/write và lifecycle
   `submitted → decided → finalized`, không dùng localStorage làm state giả;
 - 14 direct tests cho primitive và 7 direct tests cho consumer;
-- `npm run check` pass ngày 2026-07-26: cả bốn contract lint sạch, 74 direct
-  tests pass, một known upstream xfail, frontend typecheck và production build
-  pass.
+- `npm run check` pass ngày 2026-07-26: hai contract dự án lint sạch, 21 direct
+  tests pass, không có fail/xfail, frontend typecheck và production build pass.
 - visual QA local `/covenant` pass, không có browser console warning/error.
 - primitive deployed tại
   `0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570` và consumer guard tại

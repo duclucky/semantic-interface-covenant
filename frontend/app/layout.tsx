@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import "@genlayer/transaction-kit-react/styles.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "GenLayer Football Market",
-  description: "AI-powered football match predictions on GenLayer blockchain. Create bets, make predictions, and compete for points.",
+  title: "Semantic Interface Covenant | GenLayer",
+  description:
+    "Bonded semantic guarantees for APIs, MCP servers, and agent tools, enforced by GenLayer validator consensus.",
   manifest: "/site.webmanifest",
   icons: {
     icon: [
