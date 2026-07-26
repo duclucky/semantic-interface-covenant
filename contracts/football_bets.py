@@ -71,7 +71,7 @@ This result should be perfectly parsable by a JSON parser without errors.
 
         bet_id = f"{game_date}_{team1}_{team2}".lower()
         if sender_address in self.bets and bet_id in self.bets[sender_address]:
-            raise Exception("Bet already created")
+            raise gl.vm.UserError("Bet already created")
 
         bet = Bet(
             id=bet_id,
@@ -89,13 +89,13 @@ This result should be perfectly parsable by a JSON parser without errors.
     @gl.public.write
     def resolve_bet(self, bet_id: str) -> None:
         if self.bets[gl.message.sender_address][bet_id].has_resolved:
-            raise Exception("Bet already resolved")
+            raise gl.vm.UserError("Bet already resolved")
 
         bet = self.bets[gl.message.sender_address][bet_id]
         bet_status = self._check_match(bet.resolution_url, bet.team1, bet.team2)
 
         if int(bet_status["winner"]) < 0:
-            raise Exception("Game not finished")
+            raise gl.vm.UserError("Game not finished")
 
         bet.has_resolved = True
         bet.real_winner = str(bet_status["winner"])
