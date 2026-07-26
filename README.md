@@ -10,11 +10,13 @@ Windows.
 - Node.js 22 và GenLayer CLI 0.39.2.
 - Python 3.12 trong `.venv`.
 - Contract lint + semantic validation.
-- 53 direct-mode tests pass và 1 known limitation xfail, gồm mock web/LLM,
-  validator và visual-input behavior.
+- 74 direct-mode tests pass và 1 known limitation xfail, gồm mock web/LLM,
+  validator, visual-input behavior, 14 tests cho
+  `SemanticInterfaceCovenant` và 7 tests cho consumer `ToolRouterGuard`.
 - 3 integration tests đã pass trên hosted Studionet ngày 2026-07-26
   (`3 passed in 178.98s` qua lệnh npm chuẩn).
-- Next.js frontend và production build.
+- Next.js frontend và production build, gồm workbench `/covenant` đọc/ghi state
+  thật và theo dõi transaction qua `submitted → decided → finalized`.
 - GenLayer MCP project config + script handshake kiểm tra tool list.
 - Transaction Kit core/React pin từ package branches chính thức.
 - Hosted Docs MCP đã ghi cấu hình nhưng tắt vì endpoint đang trả HTTP 502.
@@ -49,6 +51,7 @@ npm run dev
 Frontend:
 
 - app mẫu: `http://localhost:3000`
+- Semantic Interface Covenant: `http://localhost:3000/covenant`
 - Transaction Kit lab: `http://localhost:3000/transaction-kit`
 
 ## Localnet và network
@@ -133,6 +136,8 @@ một thay đổi breaking nên không được áp dụng. Không còn advisory
 
 ## Tài liệu
 
+- [Idea Registry — nguồn chuẩn để chống trùng ý tưởng](docs/IDEA-REGISTRY.md)
+- [IDEA-001 — Semantic Interface Covenant](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/README.md)
 - [Nghiên cứu CDK, MCP, Transaction Kit](docs/05-CDK-MCP-TRANSACTION-KIT.md)
 - [Tổng quan GenLayer](docs/00-TONG-QUAN-GENLAYER.md)
 - [Quy trình build và nộp](docs/01-QUY-TRINH-BUILD-VA-NOP.md)

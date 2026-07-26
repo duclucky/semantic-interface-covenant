@@ -94,6 +94,12 @@ export function Navbar() {
 
               {/* Center: Stats */}
               <div className="hidden md:flex items-center gap-6 text-sm">
+                <a
+                  href="/covenant"
+                  className="rounded-md border border-accent/40 px-3 py-1.5 text-accent transition-colors hover:bg-accent/10"
+                >
+                  Covenant Lab
+                </a>
                 <div className="flex items-center gap-2">
                   <span className="text-muted-foreground">Total Bets:</span>
                   <span className="text-foreground font-bold text-accent">{totalBets}</span>

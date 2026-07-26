@@ -24,9 +24,11 @@
     "deploy": "genlayer deploy"
   },
   "devDependencies": {
-    "genlayer-js": "git+https://github.com/genlayerlabs/genlayer-js.git#50a936c4f0e436739851c8a4c47badcdd8c588dd"
+    "genlayer-js": "1.1.8",
+    "viem": "^2.55.8"
   },
   "overrides": {
-    "brace-expansion": "5.0.8"
+    "brace-expansion": "5.0.8",
+    "genlayer-js": "1.1.8"
   }
 }

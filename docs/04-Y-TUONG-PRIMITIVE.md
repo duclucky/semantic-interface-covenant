@@ -1,5 +1,12 @@
 # Ý Tưởng Primitive Cho Mục Intelligent Contracts
 
+> **Trạng thái: LEGACY-EXCLUDED.** Đây là bản brainstorm cũ, không còn là
+> danh sách ứng viên để build. Tám cấu trúc bên dưới đã được đăng ký làm vùng
+> loại trừ trong [Idea Registry](IDEA-REGISTRY.md); không được tạo ý tưởng mới
+> bằng cách đổi tên, đổi ngành hoặc ghép thêm giao diện vào một cấu trúc này.
+> Mọi ý tưởng mới phải có ID và specification theo
+> [quy trình chống trùng](ideas/README.md) trước khi viết contract.
+
 Điểm chung bắt buộc: **input tham số hóa** (tái dùng) + **lõi là phán quyết chủ quan/web** + **validator kiểm nghĩa**.
 
 ## Từ guide gốc (D5)

@@ -1,0 +1,291 @@
+{
+  "network": "studionet",
+  "chainId": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "explorer": "https://explorer-studio.genlayer.com",
+  "walletAddress": "0xC495ef51618D03267A1f227aFe5b27B38c748272",
+  "frontendBrowserRead": {
+    "url": "http://localhost:3100/covenant",
+    "readAt": "2026-07-26T16:16:06.049Z",
+    "contractAddress": "0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570",
+    "covenantId": "genlayer-js-calldata-v1",
+    "covenantActive": true,
+    "bindingId": "binding-1",
+    "bindingStatus": "ACTIVE",
+    "caseId": "case-calldata-method-key",
+    "caseStatus": "RESOLVED",
+    "verdictId": "verdict-case-calldata-method-key",
+    "compatibilityClass": "BREAKING",
+    "severityBand": "CRITICAL",
+    "sourceCoverage": "SUFFICIENT",
+    "violatedGuaranteeIds": [
+      "method-key"
+    ],
+    "consoleErrors": 0,
+    "browserWalletWrite": "PENDING_CONNECTOR_AND_WALLET"
+  },
+  "primitive": {
+    "contractAddress": "0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570",
+    "transactionHash": "0xd6cc527f3e0382c41da91e235d969b632bcb023a082bae8c6e1e921c22b48a47",
+    "status": "FINALIZED",
+    "finalizedAt": "2026-07-26T14:40:35.821Z"
+  },
+  "guard": {
+    "contractAddress": "0xA58132c068E0406E2d5d43E8b72E2b2361ac057D",
+    "covenantAddress": "0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570",
+    "bindingId": "binding-1",
+    "allowDegraded": false,
+    "transactionHash": "0x972bdc31463fe87b9cb633e0739c1357b41f9c23e043490ebd8c05c4234f1b8e",
+    "status": "FINALIZED",
+    "finalizedAt": "2026-07-26T14:41:48.078Z"
+  },
+  "setup": {
+    "covenantId": "genlayer-js-calldata-v1",
+    "walletAddress": "0xC495ef51618D03267A1f227aFe5b27B38c748272",
+    "serviceCreditWei": "1000000000000000000",
+    "challengeBondWei": "100000000000000000",
+    "stableEncoderUrl": "https://raw.githubusercontent.com/genlayerlabs/genlayer-js/a76bec395aaa927720ee0ce364899a64044dd43e/src/abi/calldata/encoder.ts",
+    "rawRepositoryPrefix": "https://raw.githubusercontent.com/genlayerlabs/genlayer-js/",
+    "transactions": {
+      "createCovenant": {
+        "transactionHash": "0xa77dade77d74a892b1a230d5c44f86cdff322fc5be481a9768f7bddd89e12bd6",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:05:11.000Z",
+        "recoveredFromOnchainState": true
+      },
+      "addMethodKeyGuarantee": {
+        "transactionHash": "0x99f3a3e340de4dc3b43e6bed98c47aae80fac00572d47778e0b6b2a73475fb83",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:08:32.916Z"
+      },
+      "addStableEncoderSource": {
+        "transactionHash": "0x773d4526de0c94d9df1911242fe5c33588c4d7d4860ca5085a6d9224c8d8b594",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:09:10.311Z"
+      },
+      "addRepositoryObservationScope": {
+        "transactionHash": "0xefe3543addd006ed72a2391bc1ec8a5d0f7ff4c272e9b04578255be5e234c780",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:09:47.393Z"
+      },
+      "activateCovenant": {
+        "transactionHash": "0xfadc7112171369d8434f8157972fdf0c8e87f4134b749c017edc03ca4eabfb77",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:10:29.889Z"
+      }
+    },
+    "stateAfterFinalization": {
+      "active": true,
+      "default_service_credit": "1000000000000000000",
+      "deprecated": false,
+      "guarantee_count": 1,
+      "id": "genlayer-js-calldata-v1",
+      "interface_kind": "API",
+      "minimum_challenge_bond": "100000000000000000",
+      "provider": "0xc495ef51618d03267a1f227afe5b27b38c748272",
+      "source_count": 2,
+      "title": "GenLayer JavaScript SDK calldata compatibility",
+      "version": "1.0.0"
+    },
+    "completedAt": "2026-07-26T15:10:31.402Z"
+  },
+  "integrator": {
+    "walletAddress": "0x45aD397c438397A702B53a7499a78D08961D39Db",
+    "role": "integrator",
+    "keyStorage": "ignored root .env",
+    "generatedForDemo": true,
+    "balanceWei": "10000000000000000000",
+    "funding": {
+      "transactionHash": "0xb3c9d29b14c7bf986a566415f365c6732f0e42efc7e7ccee521a6032b10a01f2",
+      "status": "FINALIZED",
+      "amountWei": "10000000000000000000",
+      "amountGen": "10",
+      "blockNumber": "0",
+      "gasUsed": "8000000",
+      "finalizedAt": "2026-07-26T15:26:43.000Z"
+    }
+  },
+  "demo": {
+    "bindingId": "binding-1",
+    "caseId": "case-calldata-method-key",
+    "cureId": "cure-calldata-method-key",
+    "providerAddress": "0xC495ef51618D03267A1f227aFe5b27B38c748272",
+    "integratorAddress": "0x45aD397c438397A702B53a7499a78D08961D39Db",
+    "providerBindingBondWei": "2000000000000000000",
+    "challengeBondWei": "100000000000000000",
+    "breakingEncoderUrl": "https://raw.githubusercontent.com/genlayerlabs/genlayer-js/50a936c4f0e436739851c8a4c47badcdd8c588dd/src/abi/calldata/encoder.ts",
+    "transactions": {
+      "offerBinding": {
+        "transactionHash": "0x42f63cf835bb9864cab559e8e2efb1807e1ae0f6c5bfa81f2c17e71cd2a37932",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:30:42.000Z",
+        "recoveredFromOnchainState": true
+      },
+      "acceptBinding": {
+        "transactionHash": "0x003cba0e1555f914dc44cbb3f900c9ee69cb9b1ba40ac3631e3da045703c4e0c",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:33:10.324Z"
+      },
+      "routeBeforeDispute": {
+        "transactionHash": "0x752a8e5b193316378340c1027a507361476424553b245aec6d5a00a1d3993f3d",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:33:48.780Z"
+      },
+      "openCase": {
+        "transactionHash": "0xf261b177e077886040983d8a8bf052e8df497411ac34f3f03910f792721154bd",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:34:30.730Z"
+      },
+      "addBreakingObservation": {
+        "transactionHash": "0x185f8e556d4ea7aeb95a970a48ac6fbfd5317204227031bbc8c4e1e20a3c447a",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:37:22.277Z"
+      },
+      "adjudicateBreakingCase": {
+        "transactionHash": "0xa450b5f95eb9e26eca8b4955c7b94d61b123a06690b4848040514047c025d83d",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:40:07.566Z"
+      },
+      "submitCure": {
+        "transactionHash": "0x339802df8fa6e02bed5a32eef82f1b0e45b73bf29531a6dfc0392c014ad2ca10",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:43:53.442Z"
+      },
+      "addCureSource": {
+        "transactionHash": "0x35e4541006096bf0c6150bdcf9122ad74fde8f1ac0554a97f2e7728c738a4a69",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:44:47.861Z"
+      },
+      "adjudicateCure": {
+        "transactionHash": "0xf5b2cd5789f34e906ff15a4a211fd4ea1649151fb13d1559cd8de50987cdfa63",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:45:47.322Z"
+      },
+      "routeAfterCure": {
+        "transactionHash": "0x99559dc2f2cec8803ca57064527d976953e10aa5705d6cfa14df126b29ed2eef",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:47:02.792Z"
+      },
+      "withdrawIntegratorCredit": {
+        "transactionHash": "0x8acba873aa15b1999cc473ebeeed1460917af96d55c38c4e12caeeb6bb0c9494",
+        "status": "FINALIZED",
+        "finalizedAt": "2026-07-26T15:51:56.458Z"
+      }
+    },
+    "states": {
+      "bindingOffered": {
+        "status": "OFFERED",
+        "providerBondWei": "2000000000000000000",
+        "subscriberContract": "0xA58132c068E0406E2d5d43E8b72E2b2361ac057D"
+      },
+      "bindingAfterVerdict": {
+        "accepted": true,
+        "active_case_id": "",
+        "active_cure_id": "",
+        "authorized_watcher": "0x45ad397c438397a702b53a7499a78d08961d39db",
+        "case_count": 1,
+        "closed": false,
+        "covenant_id": "genlayer-js-calldata-v1",
+        "id": "binding-1",
+        "integrator": "0x45ad397c438397a702b53a7499a78d08961d39db",
+        "minimum_challenge_bond": "100000000000000000",
+        "provider": "0xc495ef51618d03267a1f227afe5b27b38c748272",
+        "provider_bond": "1000000000000000000",
+        "service_credit": "1000000000000000000",
+        "status": "ACTIVE",
+        "subscriber_contract": "0xa58132c068e0406e2d5d43e8b72e2b2361ac057d"
+      },
+      "case": {
+        "binding_id": "binding-1",
+        "bond_settled": true,
+        "challenge_bond": "100000000000000000",
+        "claim_summary": "The candidate JavaScript SDK encoder replaces the current Studionet method dispatch key method with an empty string, so deployed public methods can no longer be called on the current runtime.",
+        "id": "case-calldata-method-key",
+        "observation_count": 1,
+        "opened_by": "0x45ad397c438397a702b53a7499a78d08961d39db",
+        "status": "RESOLVED",
+        "verdict_id": "verdict-case-calldata-method-key"
+      },
+      "verdict": {
+        "case_id": "case-calldata-method-key",
+        "compatibility_class": "BREAKING",
+        "id": "verdict-case-calldata-method-key",
+        "new_binding_status": "QUARANTINED",
+        "previous_binding_status": "ACTIVE",
+        "rationale": "The candidate SDK encoder uses an empty string as the method dispatch key instead of the required 'method' key, which violates the REQUIRED guarantee for contract call encoding compatibility with the Studionet runtime.",
+        "required_action": "QUARANTINE",
+        "settlement_amount": "1000000000000000000",
+        "severity_band": "CRITICAL",
+        "source_coverage": "SUFFICIENT",
+        "violated_guarantee_count": 1
+      },
+      "violatedGuaranteeIds": [
+        "method-key"
+      ],
+      "guardQuarantined": {
+        "allow_degraded": false,
+        "binding_id": "binding-1",
+        "can_route": false,
+        "covenant_contract": "0x05b27207c7ac50d22e5c1afbfd3c20dbccca0570",
+        "covenant_status": "QUARANTINED",
+        "last_verdict_id": "verdict-case-calldata-method-key",
+        "route_count": 1
+      },
+      "cure": {
+        "binding_id": "binding-1",
+        "id": "cure-calldata-method-key",
+        "parent_verdict_id": "verdict-case-calldata-method-key",
+        "rationale": "The stable encoder implementation in both baseline and cure evidence uses the exact string key 'method' in the makeCalldataObject function when constructing the calldata object (line: 'ret[\"method\"] = method'), which matches the required guarantee that contract calls must encode the public method name under the string key 'method'. The cure evidence shows restoration of the same implementation that satisfies the method-key guarantee.",
+        "source_count": 1,
+        "status": "CURED",
+        "submitted_by": "0xc495ef51618d03267a1f227afe5b27b38c748272"
+      },
+      "guardRestored": {
+        "allow_degraded": false,
+        "binding_id": "binding-1",
+        "can_route": true,
+        "covenant_contract": "0x05b27207c7ac50d22e5c1afbfd3c20dbccca0570",
+        "covenant_status": "ACTIVE",
+        "last_verdict_id": "cure-cure-calldata-method-key",
+        "route_count": 2
+      },
+      "finalBinding": {
+        "accepted": true,
+        "active_case_id": "",
+        "active_cure_id": "",
+        "authorized_watcher": "0x45ad397c438397a702b53a7499a78d08961d39db",
+        "case_count": 1,
+        "closed": false,
+        "covenant_id": "genlayer-js-calldata-v1",
+        "id": "binding-1",
+        "integrator": "0x45ad397c438397a702b53a7499a78d08961d39db",
+        "minimum_challenge_bond": "100000000000000000",
+        "provider": "0xc495ef51618d03267a1f227afe5b27b38c748272",
+        "provider_bond": "1000000000000000000",
+        "service_credit": "1000000000000000000",
+        "status": "ACTIVE",
+        "subscriber_contract": "0xa58132c068e0406e2d5d43e8b72e2b2361ac057d"
+      },
+      "finalGuard": {
+        "allow_degraded": false,
+        "binding_id": "binding-1",
+        "can_route": true,
+        "covenant_contract": "0x05b27207c7ac50d22e5c1afbfd3c20dbccca0570",
+        "covenant_status": "ACTIVE",
+        "last_verdict_id": "cure-cure-calldata-method-key",
+        "route_count": 2
+      },
+      "accounting": {
+        "contract_balance": "1000000000000000000",
+        "locked_bonds": "1000000000000000000",
+        "withdrawable_credits": 0
+      },
+      "providerCreditWei": 0,
+      "integratorCreditWei": 0,
+      "integratorBalanceBeforeWithdrawalWei": "9900000000000000000",
+      "integratorCreditBeforeWithdrawalWei": "1100000000000000000",
+      "integratorBalanceAfterWithdrawalWei": "11000000000000000000"
+    },
+    "completedAt": "2026-07-26T15:51:58.738Z"
+  }
+}

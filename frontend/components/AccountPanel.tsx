@@ -19,7 +19,12 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 const METAMASK_INSTALL_URL = "https://metamask.io/download/";
 
-export function AccountPanel() {
+interface AccountPanelProps {
+  context?: "football" | "covenant";
+}
+
+export function AccountPanel({ context = "football" }: AccountPanelProps) {
+  const isCovenant = context === "covenant";
   const {
     address,
     isConnected,
@@ -31,7 +36,7 @@ export function AccountPanel() {
     switchWalletAccount,
   } = useWallet();
 
-  const { data: points = 0 } = usePlayerPoints(address);
+  const { data: points = 0 } = usePlayerPoints(isCovenant ? null : address);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [connectionError, setConnectionError] = useState("");
@@ -108,7 +113,9 @@ export function AccountPanel() {
               Connect to GenLayer
             </DialogTitle>
             <DialogDescription>
-              Connect your MetaMask wallet to start betting
+              {isCovenant
+                ? "Connect MetaMask to sign covenant transactions on Studionet"
+                : "Connect your MetaMask wallet to start betting"}
             </DialogDescription>
           </DialogHeader>
 
@@ -188,10 +195,14 @@ export function AccountPanel() {
             <AddressDisplay address={address} maxLength={12} />
           </div>
           <div className="h-4 w-px bg-white/10" />
-          <div className="flex items-center gap-1">
-            <span className="text-sm font-semibold text-accent">{points}</span>
-            <span className="text-xs text-muted-foreground">pts</span>
-          </div>
+          {isCovenant ? (
+            <span className="text-xs font-medium text-accent">Studionet</span>
+          ) : (
+            <div className="flex items-center gap-1">
+              <span className="text-sm font-semibold text-accent">{points}</span>
+              <span className="text-xs text-muted-foreground">pts</span>
+            </div>
+          )}
         </div>
 
         <DialogTrigger asChild>
@@ -217,10 +228,12 @@ export function AccountPanel() {
             <code className="text-sm font-mono break-all">{address}</code>
           </div>
 
-          <div className="brand-card p-4 space-y-2">
-            <p className="text-sm text-muted-foreground">Your Points</p>
-            <p className="text-2xl font-bold text-accent">{points}</p>
-          </div>
+          {!isCovenant ? (
+            <div className="brand-card p-4 space-y-2">
+              <p className="text-sm text-muted-foreground">Your Points</p>
+              <p className="text-2xl font-bold text-accent">{points}</p>
+            </div>
+          ) : null}
 
           <div className="brand-card p-4 space-y-2">
             <p className="text-sm text-muted-foreground">Network Status</p>
