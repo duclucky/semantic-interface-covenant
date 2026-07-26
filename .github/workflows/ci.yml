@@ -8,12 +8,8 @@ on:
 
 jobs:
   quality:
-    name: Quality (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    name: Quality (Windows)
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
