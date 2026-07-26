@@ -7,8 +7,14 @@
 **Contract:** `SemanticInterfaceCovenant`
 
 **Studionet:** primitive
-`0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570`, enforcement guard
-`0xA58132c068E0406E2d5d43E8b72E2b2361ac057D`.
+[`0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570`](https://explorer-studio.genlayer.com/address/0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570),
+enforcement guard
+[`0xA58132c068E0406E2d5d43E8b72E2b2361ac057D`](https://explorer-studio.genlayer.com/address/0xA58132c068E0406E2d5d43E8b72E2b2361ac057D).
+
+**Deploy transactions:** primitive
+[`0xd6cc527f...b48a47`](https://explorer-studio.genlayer.com/tx/0xd6cc527f3e0382c41da91e235d969b632bcb023a082bae8c6e1e921c22b48a47),
+guard
+[`0x972bdc31...f1b8e`](https://explorer-studio.genlayer.com/tx/0x972bdc31463fe87b9cb633e0739c1357b41f9c23e043490ebd8c05c4234f1b8e).
 
 **Evidence đầy đủ:** [evidence/studionet/deployment.json](evidence/studionet/deployment.json)
 
