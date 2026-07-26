@@ -124,6 +124,11 @@ Kết quả browser test: panel estimate hiển thị fee/caps/fingerprint, nút
 `Approve & sign` chuyển qua submitted -> decided/accepted -> finalized, không
 có browser console error.
 
+Audit dependency sau khi bỏ các gói Wagmi không được source sử dụng và cập nhật
+Next/viem: từ 46 advisories (có 1 critical) còn 3 high, đều nằm trong
+`postcss`/`sharp` nội bộ của Next 16.2.12. Không dùng `npm audit fix --force`
+vì npm đề xuất hạ Next xuống 9.3.3.
+
 Nguồn:
 
 - [Official Transaction Kit repository](https://github.com/genlayerlabs/genlayer-transaction-kit)

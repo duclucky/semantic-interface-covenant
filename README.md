@@ -102,6 +102,13 @@ npm run mcp:verify
 
 `genlayer-mcp` là experimental; mọi code sinh ra phải qua `npm run check`.
 
+## Dependency audit
+
+`npm audit --omit=dev` hiện còn 3 high advisories trong dependency nội bộ
+`postcss`/`sharp` của Next.js 16.2.12. Đây là bản Next stable mới nhất tại lúc
+kiểm tra; đề xuất tự động duy nhất của npm là `--force` hạ xuống Next 9.3.3,
+một thay đổi breaking nên không được áp dụng. Không còn advisory critical.
+
 ## Tài liệu
 
 - [Nghiên cứu CDK, MCP, Transaction Kit](docs/05-CDK-MCP-TRANSACTION-KIT.md)
