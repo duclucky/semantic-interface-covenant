@@ -1,6 +1,6 @@
 # IDEA-001 — Implementation Status
 
-**Trạng thái:** `BUILDING — STUDIONET LIFECYCLE VALIDATED`
+**Trạng thái:** `VALIDATED — INTELLIGENT CONTRACTS TRACK`
 
 **Ngày kiểm chứng local gần nhất:** 2026-07-26
 
@@ -20,17 +20,17 @@ Quy trình deployment/evidence nằm tại [DEPLOYMENT.md](DEPLOYMENT.md).
 ## Source và tests
 
 - Primitive contract:
-  [contracts/semantic_interface_covenant.py](../../../contracts/semantic_interface_covenant.py)
+  [contracts/semantic_interface_covenant.py](../contracts/semantic_interface_covenant.py)
 - Consumer contract:
-  [contracts/tool_router_guard.py](../../../contracts/tool_router_guard.py)
+  [contracts/tool_router_guard.py](../contracts/tool_router_guard.py)
 - Primitive direct tests:
-  [tests/direct/test_semantic_interface_covenant.py](../../../tests/direct/test_semantic_interface_covenant.py)
+  [tests/direct/test_semantic_interface_covenant.py](../tests/direct/test_semantic_interface_covenant.py)
 - Consumer direct tests:
-  [tests/direct/test_tool_router_guard.py](../../../tests/direct/test_tool_router_guard.py)
+  [tests/direct/test_tool_router_guard.py](../tests/direct/test_tool_router_guard.py)
 - GenLayer frontend client:
-  [frontend/lib/contracts/SemanticInterfaceCovenant.ts](../../../frontend/lib/contracts/SemanticInterfaceCovenant.ts)
+  [frontend/lib/contracts/SemanticInterfaceCovenant.ts](../frontend/lib/contracts/SemanticInterfaceCovenant.ts)
 - Covenant workbench:
-  [frontend/app/covenant/page.tsx](../../../frontend/app/covenant/page.tsx)
+  [frontend/app/covenant/page.tsx](../frontend/app/covenant/page.tsx)
 
 `SemanticInterfaceCovenant` hiện có 30 public methods:
 
@@ -264,17 +264,21 @@ trường triển khai, live arbitrary observation phải tiếp tục bị gi�
 provider domains đã đăng ký và không được quảng bá là một general-purpose web
 fetcher.
 
-## Điều kiện để chuyển sang VALIDATED
+## Ranh giới validation
 
-Không chuyển registry sang `VALIDATED` cho tới khi:
+Dự án đã đạt `VALIDATED` cho hạng mục **Intelligent Contracts** vì primitive và
+consumer đã được deploy trên Studionet; validator consensus trực tiếp quyết
+định `BREAKING/CRITICAL` và `CURED`; subscriber thay đổi enforcement state;
+route bị chặn/khôi phục; settlement và withdrawal được xác minh bằng canonical
+state, receipt và balance evidence.
 
-1. primitive và consumer được deploy với address/receipt được lưu riêng theo
-   network;
-2. frontend dùng deployed address, gửi transaction đến finalized và đọc lại
-   canonical state;
-3. subscriber message thực sự đổi trạng thái consumer và consumer chặn route
-   trên network;
-4. withdrawal path được kiểm chứng bằng balance/receipt trên network;
-5. README claim khớp hoàn toàn với source và evidence;
-6. có ít nhất một integration/example ngoài chính workbench chứng minh đường
-   adoption khả tín.
+Các mục sau vẫn là `PENDING_REAL_EVIDENCE` nếu muốn nâng tuyên bố lên hạng mục
+**Projects** hoặc production adoption:
+
+1. browser-wallet write lifecycle hoàn chỉnh qua frontend;
+2. UI evidence cho failure/retry/finalization;
+3. external adopter ngoài reference consumer;
+4. deployment/lifecycle trên Asimov hoặc Bradbury.
+
+Không được dùng trạng thái `VALIDATED` của Intelligent Contracts để ngầm tuyên
+bố rằng các mục Project-grade trên đã hoàn thành.

@@ -577,11 +577,12 @@ Nếu implementation thiếu một hàng, README không được giữ claim tư
 | Reuse | `PASS ở mức thiết kế` | Binding/view/subscriber interface áp dụng cho nhiều tool/API |
 | Differentiation | `PASS theo khảo sát 2026-07-26` | Không trùng fingerprint legacy hoặc public analogues đã khảo sát |
 | Claim-to-code | `PASS ở mức spec` | Matrix đã khóa; phải kiểm lại sau implementation |
-| Full lifecycle | `PASS CONTRACT TRÊN STUDIONET / FRONTEND BROWSER WRITE PENDING` | Primitive, consumer, hai ví, consensus web/LLM, quarantine, cure, route enforcement và withdrawal đều đã finalized; vẫn cần ghi nhận một browser-wallet write qua frontend |
+| Full lifecycle | `PASS CHO INTELLIGENT CONTRACTS / PROJECT FRONTEND WRITE PENDING` | Primitive, consumer, hai ví, consensus web/LLM, quarantine, cure, route enforcement và withdrawal đều đã finalized; browser-wallet write chỉ còn là điều kiện nếu nộp ở cấp Project |
 | Scope honesty | `PASS` | Tách rõ local verification, Studionet evidence, frontend code verification và phần browser/external adoption còn thiếu |
 
-`Full lifecycle` chưa chứng minh không ngăn việc chọn ý tưởng để thiết kế, nhưng
-ngăn mọi tuyên bố “submission-ready”.
+Vòng đời contract đã đủ bằng chứng cho hạng mục Intelligent Contracts. Không
+được suy rộng thành Project-grade browser lifecycle khi write evidence còn
+thiếu.
 
 ## 20. Adoption path
 
@@ -664,9 +665,9 @@ Chưa có:
 - Asimov/Bradbury evidence;
 - external adopter.
 
-Vì vậy contract lifecycle trên Studionet đã được kiểm chứng, nhưng trạng thái
-project vẫn là `BUILDING` cho tới khi browser-wallet lifecycle và hồ sơ
-submission được hoàn tất; chưa tuyên bố “ready to submit”.
+Vì vậy trạng thái hiện tại là `VALIDATED` cho hạng mục Intelligent Contracts.
+Browser-wallet lifecycle, Asimov/Bradbury và external adoption vẫn là
+`PENDING_REAL_EVIDENCE` và ngăn mọi tuyên bố ở cấp Project.
 
 Runbook cho deployment và real evidence:
 [DEPLOYMENT.md](DEPLOYMENT.md).

@@ -34,7 +34,7 @@ The recorded lifecycle finalized all of the following:
 
 The complete addresses, transaction hashes, finalized timestamps, verdicts,
 state snapshots, accounting, and balance evidence are in
-[deployment.json](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/evidence/studionet/deployment.json).
+[deployment.json](docs/evidence/studionet/deployment.json).
 
 ## Why GenLayer is required
 
@@ -82,7 +82,7 @@ or:
 on_covenant_status(binding_id, verdict_id, new_status)
 ```
 
-See [INTEGRATION.md](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/INTEGRATION.md)
+See [INTEGRATION.md](docs/INTEGRATION.md)
 for the pull, push, settlement, and fail-closed integration patterns.
 
 ## Repository layout
@@ -99,7 +99,7 @@ frontend/
   app/covenant/page.tsx            # real read/write workbench
 scripts/
   deploy-idea001-studionet.mjs     # resumable two-wallet lifecycle
-docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/
+docs/
   README.md                        # specification and threat model
   INTEGRATION.md                   # builder integration guide
   SUBMISSION.md                    # reviewer-facing explanation
@@ -189,12 +189,11 @@ already-finalized value-bearing transactions.
 
 ## Documentation
 
-- [Full specification and threat model](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/README.md)
-- [Implementation status](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/IMPLEMENTATION.md)
-- [Builder integration guide](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/INTEGRATION.md)
-- [Submission notes](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/SUBMISSION.md)
-- [Deployment runbook](docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/DEPLOYMENT.md)
-- [Idea registry and anti-duplicate fingerprint](docs/IDEA-REGISTRY.md)
+- [Full specification and threat model](docs/README.md)
+- [Implementation status](docs/IMPLEMENTATION.md)
+- [Builder integration guide](docs/INTEGRATION.md)
+- [Submission notes](docs/SUBMISSION.md)
+- [Deployment runbook](docs/DEPLOYMENT.md)
 
 ## Scope honesty
 

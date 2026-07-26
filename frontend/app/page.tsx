@@ -196,7 +196,7 @@ export default function HomePage() {
               </p>
             </div>
             <a
-              href={`${REPOSITORY}/blob/main/docs/ideas/IDEA-001-SEMANTIC-INTERFACE-COVENANT/INTEGRATION.md`}
+              href={`${REPOSITORY}/blob/main/docs/INTEGRATION.md`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold transition hover:bg-white/5"

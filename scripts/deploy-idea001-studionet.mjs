@@ -13,8 +13,6 @@ const ENV_PATH = path.join(ROOT_DIR, ".env");
 const EVIDENCE_DIR = path.join(
   ROOT_DIR,
   "docs",
-  "ideas",
-  "IDEA-001-SEMANTIC-INTERFACE-COVENANT",
   "evidence",
   "studionet",
 );

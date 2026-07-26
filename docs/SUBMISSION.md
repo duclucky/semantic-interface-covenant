@@ -112,9 +112,9 @@ are in [README.md](README.md).
 test suite, checks frontend TypeScript, and produces a Next.js production
 build.
 
-The last completed verification on 2026-07-26 passed with 74 tests, one
-documented upstream xfail, four lint-clean contracts, a clean TypeScript check,
-and a successful production build.
+The last completed verification on 2026-07-26 passed with 21 direct tests, no
+failures or expected failures, two lint-clean project contracts, a clean
+TypeScript check, and a successful production build.
 
 ## Honest limits
 
