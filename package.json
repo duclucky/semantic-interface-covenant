@@ -2,14 +2,7 @@
   "name": "semantic-interface-covenant",
   "type": "module",
   "private": true,
-  "workspaces": [
-    "frontend"
-  ],
   "scripts": {
-    "dev": "cd frontend && npm run dev",
-    "build": "cd frontend && npm run build",
-    "start": "cd frontend && npm run start",
-    "lint": "cd frontend && npm run lint",
     "lint:contracts": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/lint-contracts.ps1",
     "test:direct": ".venv\\Scripts\\python.exe -m pytest tests\\direct -v",
     "check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1",

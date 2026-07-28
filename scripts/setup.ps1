@@ -60,10 +60,6 @@ try {
         throw "Failed to install Node dependencies."
     }
 
-    if (-not (Test-Path -LiteralPath "frontend\.env")) {
-        Copy-Item -LiteralPath "frontend\.env.example" -Destination "frontend\.env"
-    }
-
     if (-not $SkipChecks) {
         & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\check.ps1
         if ($LASTEXITCODE -ne 0) {

@@ -1,6 +1,6 @@
 # Integrating Semantic Interface Covenant
 
-This guide is for a builder who wants a contract or application to stop using
+This guide is for a builder who wants a contract or offchain client to stop using
 an API, MCP server, or agent tool after GenLayer validators find a semantic
 breaking change.
 
@@ -8,7 +8,7 @@ breaking change.
 
 | Mode | Consumer action | Best for |
 |---|---|---|
-| Pull | Read `get_binding_status(binding_id)` before a sensitive action | Applications that can tolerate one view call |
+| Pull | Read `get_binding_status(binding_id)` before a sensitive action | Clients that can tolerate one view call |
 | Push | Implement `on_covenant_status(binding_id, verdict_id, new_status)` | Contracts that need local, finalized enforcement state |
 | Both | Accept notifications and occasionally reconcile with the view | High-value integrations that want fast enforcement plus recovery |
 
@@ -123,7 +123,7 @@ Useful view methods:
 | `get_account_credit(account)` | Withdrawable finalized credit |
 | `get_accounting()` | Contract balance, locked bonds, credits |
 
-Applications should display these reads after finalization instead of caching a
+Clients should display these reads after finalization instead of caching a
 transaction hash as if it were contract state.
 
 ## Value settlement
@@ -139,9 +139,9 @@ Do not mark a reward paid from the transaction submission alone. Wait for
 `FINALIZED`, read the beneficiary credit again, and verify the receiving
 account balance when the product outcome depends on payment.
 
-## Frontend transaction lifecycle
+## Transaction lifecycle
 
-The included frontend client demonstrates the expected sequence:
+Deployment and client code should follow the expected sequence:
 
 ```text
 SUBMITTING
@@ -152,8 +152,8 @@ SUBMITTING
   → COMPLETE
 ```
 
-It uses the deployed contract as the display source and exposes failed reads;
-it does not substitute localStorage or static demo records.
+Use the deployed contract as the display source and expose failed reads; do not
+substitute cached hashes or static demo records for canonical state.
 
 ## Integration checklist
 

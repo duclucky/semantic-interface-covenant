@@ -1,7 +1,11 @@
 # Semantic Interface Covenant
 
-A reusable GenLayer Intelligent Contract primitive for protecting APIs, MCP
+A standalone GenLayer Intelligent Contract primitive for protecting APIs, MCP
 servers, and agent tools against semantic breaking changes.
+
+This repository is contract-focused for the Builder track **Intelligent
+Contracts** contribution type. It intentionally does not include an application
+frontend, wallet UI, Next.js product, or user-facing workflow.
 
 Providers and integrators agree to versioned behavioral guarantees and lock GEN
 bonds. If an interface changes, GenLayer validators independently fetch
@@ -19,21 +23,21 @@ Network: Studionet, chain ID `61999`.
 | `SemanticInterfaceCovenant` | [`0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570`](https://explorer-studio.genlayer.com/address/0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570) | [`0xd6cc527f...b48a47`](https://explorer-studio.genlayer.com/tx/0xd6cc527f3e0382c41da91e235d969b632bcb023a082bae8c6e1e921c22b48a47) |
 | `ToolRouterGuard` | [`0xA58132c068E0406E2d5d43E8b72E2b2361ac057D`](https://explorer-studio.genlayer.com/address/0xA58132c068E0406E2d5d43E8b72E2b2361ac057D) | [`0x972bdc31...f1b8e`](https://explorer-studio.genlayer.com/tx/0x972bdc31463fe87b9cb633e0739c1357b41f9c23e043490ebd8c05c4234f1b8e) |
 
-The recorded lifecycle finalized all of the following:
+The recorded lifecycle finalized:
 
 - two different EOAs acting as provider and integrator;
 - provider and challenge bonds funded with GEN;
 - validator web/LLM adjudication over commit-pinned public source code;
 - `BREAKING / CRITICAL / SUFFICIENT` verdict for guarantee `method-key`;
-- binding and guard transition `ACTIVE → QUARANTINED`;
+- binding and guard transition `ACTIVE -> QUARANTINED`;
 - protected route rejection while quarantined;
 - `1 GEN` service-credit settlement;
 - validator-adjudicated cure and restoration to `ACTIVE`;
 - successful route after restoration;
 - withdrawal of `1.1 GEN`, confirmed by wallet balance change.
 
-The complete addresses, transaction hashes, finalized timestamps, verdicts,
-state snapshots, accounting, and balance evidence are in
+Full addresses, transaction hashes, finalized timestamps, verdicts, state
+snapshots, accounting, and balance evidence are in
 [deployment.json](docs/evidence/studionet/deployment.json).
 
 ## Why GenLayer is required
@@ -47,27 +51,28 @@ wrote a claim, but it cannot neutrally adjudicate that conflict.
 The contract does not accept a precomputed score or verdict. Validators fetch
 the configured evidence and perform the semantic decision inside GenVM. The
 consensus result controls on-chain state, value settlement, and consumer
-enforcement.
+enforcement. The custom validator checks the meaning-bearing verdict fields,
+not the shape of JSON output.
 
 ## Architecture
 
 ```text
 Provider + Integrator
-        │
-        │ guarantees, source rules, GEN bonds
-        ▼
+        |
+        | guarantees, source rules, GEN bonds
+        v
 SemanticInterfaceCovenant
-        │
-        ├── validators fetch public evidence
-        ├── equivalence over critical verdict fields
-        ├── binding state + settlement
-        │
-        └── finalized on_covenant_status message
-                         │
-                         ▼
+        |
+        |-- validators fetch public evidence
+        |-- equivalence over critical verdict fields
+        |-- binding state + settlement
+        |
+        `-- finalized on_covenant_status message
+                         |
+                         v
                    ToolRouterGuard
-                         │
-                         └── allow or reject protected route
+                         |
+                         `-- allow or reject protected route
 ```
 
 The reusable consumer surface is intentionally small:
@@ -82,8 +87,8 @@ or:
 on_covenant_status(binding_id, verdict_id, new_status)
 ```
 
-See [INTEGRATION.md](docs/INTEGRATION.md)
-for the pull, push, settlement, and fail-closed integration patterns.
+See [INTEGRATION.md](docs/INTEGRATION.md) for the pull, push, settlement, and
+fail-closed integration patterns.
 
 ## Repository layout
 
@@ -94,9 +99,6 @@ contracts/
 tests/direct/
   test_semantic_interface_covenant.py
   test_tool_router_guard.py
-frontend/
-  app/page.tsx                     # project landing page
-  app/covenant/page.tsx            # real read/write workbench
 scripts/
   deploy-idea001-studionet.mjs     # resumable two-wallet lifecycle
 docs/
@@ -135,32 +137,7 @@ npm run check
 `npm run check`:
 
 1. validates every contract with `genvm-lint`;
-2. runs all direct-mode tests;
-3. typechecks the frontend;
-4. creates a production Next.js build.
-
-## Frontend
-
-Copy public configuration:
-
-```powershell
-Copy-Item frontend\.env.example frontend\.env
-npm run dev
-```
-
-Open:
-
-- landing page: `http://localhost:3000`;
-- covenant workbench: `http://localhost:3000/covenant`.
-
-The workbench reads canonical contract state and implements the real transaction
-lifecycle:
-
-```text
-SUBMITTING → SUBMITTED → DECIDED → FINALIZED → READING_STATE → COMPLETE
-```
-
-It does not use localStorage or static transaction hashes as on-chain state.
+2. runs all direct-mode tests.
 
 ## Deployment and live lifecycle
 
@@ -184,7 +161,7 @@ node scripts/deploy-idea001-studionet.mjs fund-integrator
 node scripts/deploy-idea001-studionet.mjs run-demo
 ```
 
-The script resumes from the recorded evidence instead of blindly replaying
+The script resumes from recorded evidence instead of blindly replaying
 already-finalized value-bearing transactions.
 
 ## Documentation
@@ -197,11 +174,10 @@ already-finalized value-bearing transactions.
 
 ## Scope honesty
 
+- Repository-level submission category: **Intelligent Contracts**.
+- This repository intentionally contains no frontend application.
 - The full contract lifecycle is verified on Studionet.
 - Asimov and Bradbury deployments are not claimed.
-- The frontend has performed live Studionet reads. Browser-wallet write evidence
-  remains explicitly pending until a MetaMask-capable browser session is
-  available.
 - `ToolRouterGuard` is the included reference adopter; no independent external
   adopter is claimed yet.
 

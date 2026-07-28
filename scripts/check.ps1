@@ -10,19 +10,3 @@ $python = Join-Path $PSScriptRoot "..\.venv\Scripts\python.exe"
 if ($LASTEXITCODE -ne 0) {
     throw "Direct tests failed."
 }
-
-Push-Location (Join-Path $PSScriptRoot "..")
-try {
-    & npm run lint
-    if ($LASTEXITCODE -ne 0) {
-        throw "Frontend typecheck failed."
-    }
-
-    & npm run build
-    if ($LASTEXITCODE -ne 0) {
-        throw "Frontend production build failed."
-    }
-}
-finally {
-    Pop-Location
-}

@@ -1,6 +1,31 @@
-# Semantic Interface Covenant — Submission Notes
+# Semantic Interface Covenant - Intelligent Contracts Submission Notes
 
-## What the project does
+## Recommended portal category
+
+Submit this repository under Builder track contribution type **Intelligent
+Contracts**. The repository is contract-focused: it contains the reusable
+contracts, direct tests, deployment scripts, Studionet evidence, and
+contract-level documentation. It does not include a frontend, wallet UI,
+Next.js application, or user-facing product workflow.
+
+## Ready-to-paste Intelligent Contracts submission
+
+Title: Semantic Interface Covenant
+
+Description: Semantic Interface Covenant is a reusable GenLayer Intelligent
+Contract primitive for protecting APIs, MCP servers, and agent tools against
+semantic breaking changes. Providers and integrators lock GEN bonds around
+versioned guarantees; if behavior changes, validators fetch allowlisted public
+evidence and agree on the meaning of the compatibility decision, not JSON
+format. The verdict can quarantine or restore a subscribed consumer and settle
+bonded service credit. The primitive is reusable for MCP/tool marketplaces,
+agent payment flows, DAO automation, and API adapter safety. It ships with
+direct tests, docs, deployment scripts, and Studionet evidence at
+`0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570`.
+
+Evidence URL: https://github.com/duclucky/semantic-interface-covenant
+
+## What the primitive does
 
 `SemanticInterfaceCovenant` lets an API, MCP server, or agent-tool provider
 publish a versioned set of behavioral guarantees and approved public evidence
@@ -47,8 +72,7 @@ Network: Studionet, chain ID `61999`.
 - Validators compared two public, commit-pinned `genlayer-js` encoder sources.
 - The breaking adjudication finalized as
   `BREAKING / CRITICAL / SUFFICIENT`, violating guarantee `method-key`.
-- The binding and guard changed
-  `ACTIVE → QUARANTINED`; the guard changed `can_route=true → false`.
+- The binding and guard changed `ACTIVE -> QUARANTINED`.
 - `1 GEN` of service credit was settled to the integrator.
 - Validators later finalized the cure as `CURED`; the binding and guard returned
   to `ACTIVE`, and routing resumed.
@@ -76,7 +100,7 @@ For integrators:
 2. Read `get_binding_status(binding_id)` before using the protected interface,
    or subscribe a consumer contract implementing `on_covenant_status`.
 3. If behavior changes, open a bonded case and add allowlisted evidence.
-4. Call `adjudicate_case`; validators, not the frontend, decide the verdict.
+4. Call `adjudicate_case`; validators, not the caller, decide the verdict.
 5. Withdraw any finalized settlement credit.
 
 For consumer contracts:
@@ -85,10 +109,6 @@ For consumer contracts:
 - implement the push callback
   `on_covenant_status(binding_id, verdict_id, new_status)`;
 - fail closed on `QUARANTINED` and choose an explicit policy for `DEGRADED`.
-
-The focused builder guide is
-[INTEGRATION.md](INTEGRATION.md). The full state model and security boundaries
-are in [README.md](README.md).
 
 ## Repository map
 
@@ -101,27 +121,21 @@ are in [README.md](README.md).
   `tests/direct/test_tool_router_guard.py`
 - Real Studionet deployment/demo script:
   `scripts/deploy-idea001-studionet.mjs`
-- Frontend client:
-  `frontend/lib/contracts/SemanticInterfaceCovenant.ts`
-- Full read/write workbench:
-  `frontend/app/covenant/page.tsx`
 
 ## Verification
 
-`npm run check` verifies every contract with `genvm-lint`, runs the direct-mode
-test suite, checks frontend TypeScript, and produces a Next.js production
-build.
+`npm run check` verifies every contract with `genvm-lint` and runs the
+direct-mode test suite.
 
-The last completed verification on 2026-07-26 passed with 21 direct tests, no
-failures or expected failures, two lint-clean project contracts, a clean
-TypeScript check, and a successful production build.
+The latest verification in this workspace passed with 21 direct tests, no
+failures or expected failures, and two lint-clean contracts.
 
 ## Honest limits
 
-- Studionet contract lifecycle is verified; Asimov and Bradbury are not claimed.
-- The frontend has read the deployed covenant, binding, case, and verdict from
-  Studionet. A browser-wallet write remains pending until a Chrome session with
-  the Codex connector and MetaMask is available.
+- This is a standalone Intelligent Contract submission package with no
+  frontend.
+- Studionet contract lifecycle is verified; Asimov and Bradbury are not
+  claimed.
 - `ToolRouterGuard` is the included reusable consumer example; no independent
   external adopter is claimed yet.
 - Evidence is restricted to bounded public HTTPS sources. This version is not a

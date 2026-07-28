@@ -1,10 +1,10 @@
-# IDEA-001 — Implementation Status
+# IDEA-001 - Implementation Status
 
-**Trạng thái:** `VALIDATED — INTELLIGENT CONTRACTS TRACK`
+**Trang thai:** `VALIDATED - INTELLIGENT CONTRACTS SUBMISSION PACKAGE`
 
-**Ngày kiểm chứng local gần nhất:** 2026-07-26
+**Ngay kiem chung local gan nhat:** 2026-07-28
 
-**Ngày kiểm chứng Studionet gần nhất:** 2026-07-26
+**Ngay kiem chung Studionet gan nhat:** 2026-07-26
 
 **Network evidence:**
 [evidence/studionet/deployment.json](evidence/studionet/deployment.json)
@@ -13,11 +13,11 @@
 
 **Builder integration:** [INTEGRATION.md](INTEGRATION.md)
 
-Đây là hồ sơ implementation của `SemanticInterfaceCovenant`. Specification và
-trust model chuẩn nằm tại [README.md](README.md).
-Quy trình deployment/evidence nằm tại [DEPLOYMENT.md](DEPLOYMENT.md).
+Day la ho so implementation contract-focused cua `SemanticInterfaceCovenant`.
+Repository nay khong chua frontend, wallet UI, Next.js app, hay user-facing
+product workflow.
 
-## Source và tests
+## Source va tests
 
 - Primitive contract:
   [contracts/semantic_interface_covenant.py](../contracts/semantic_interface_covenant.py)
@@ -27,258 +27,96 @@ Quy trình deployment/evidence nằm tại [DEPLOYMENT.md](DEPLOYMENT.md).
   [tests/direct/test_semantic_interface_covenant.py](../tests/direct/test_semantic_interface_covenant.py)
 - Consumer direct tests:
   [tests/direct/test_tool_router_guard.py](../tests/direct/test_tool_router_guard.py)
-- GenLayer frontend client:
-  [frontend/lib/contracts/SemanticInterfaceCovenant.ts](../frontend/lib/contracts/SemanticInterfaceCovenant.ts)
-- Covenant workbench:
-  [frontend/app/covenant/page.tsx](../frontend/app/covenant/page.tsx)
 
-`SemanticInterfaceCovenant` hiện có 30 public methods:
+`SemanticInterfaceCovenant` has 30 public methods:
 
 - 17 write methods;
 - 13 view methods.
 
-`ToolRouterGuard` hiện có 8 public methods:
+`ToolRouterGuard` has 8 public methods:
 
 - 4 write methods;
 - 4 view methods.
 
-## Đã triển khai
+## Implemented contract behavior
 
-### Structured, isolated storage
+- Structured per-entity storage for covenants, guarantees, source rules,
+  bindings, cases, observations, verdicts, cures, and cure sources.
+- Bilateral lifecycle: provider creates and locks covenant configuration,
+  offers a bonded binding, and the designated integrator must accept.
+- Bounded public evidence model with HTTPS allowlist checks before
+  nondeterministic evaluation.
+- GenLayer validator consensus in `adjudicate_case` and `adjudicate_cure`.
+- Custom equivalence over meaning-bearing fields:
+  compatibility class, severity band, source coverage, required action, and the
+  sorted set of violated guarantee IDs.
+- Bond accounting for provider bond, challenge bond, service credit, credits,
+  cure top-up, and withdrawal.
+- Finalized subscriber message to a consumer contract implementing
+  `on_covenant_status`.
+- Reference `ToolRouterGuard` that authorizes the covenant contract, applies
+  idempotent status updates, and rejects protected routes while quarantined.
 
-Storage dùng các entity riêng:
+## Verification
 
-- `Covenant`;
-- `Guarantee`;
-- `SourceRule`;
-- `Binding`;
-- `Case`;
-- `Observation`;
-- `Verdict`;
-- `Cure`;
-- `CureSource`.
-
-Mọi record được key theo ID/composite ID trong `TreeMap`. Không có global
-`last_verdict`, `last_score` hoặc raw result field mà caller tùy ý ghi đè.
-
-### Bilateral covenant lifecycle
-
-Provider:
-
-1. tạo covenant;
-2. thêm structured guarantee;
-3. thêm public source rule;
-4. activate để khóa cấu hình;
-5. gửi GEN bond khi offer binding.
-
-Integrator phải gọi `accept_binding`. Provider không thể tự chấp nhận thay
-integrator.
-
-### Case và evidence
-
-Integrator hoặc authorized watcher:
-
-1. gửi challenge bond;
-2. mở case;
-3. thêm observation URL nằm trong covenant allowlist;
-4. gọi adjudication.
-
-URL validation hiện có:
-
-- HTTPS-only;
-- giới hạn độ dài;
-- chặn credential trong authority;
-- chặn localhost, loopback, link-local và các private IPv4 range phổ biến;
-- observation phải cùng authority và nằm dưới source prefix đã đăng ký;
-- số source/observation bị giới hạn.
-
-### Intelligent consensus
-
-`adjudicate_case` thực hiện trong contract:
-
-1. đọc guarantee/source/case state;
-2. validator độc lập fetch public web evidence bằng `gl.nondet.web.get`;
-3. gọi `gl.nondet.exec_prompt` với web content được đánh dấu untrusted;
-4. normalize output;
-5. dùng custom `run_nondet_unsafe` validator;
-6. so exact consensus-critical fingerprint;
-7. chỉ sau consensus mới ghi verdict, đổi binding state và cập nhật bond ledger.
-
-Consensus-critical fields:
-
-- compatibility class;
-- severity band;
-- source coverage;
-- required action;
-- sorted violated guarantee IDs.
-
-Rationale không cần giống từng chữ.
-
-### Verdict và settlement
-
-- `COMPATIBLE`: binding giữ/khôi phục `ACTIVE`; challenge bond chuyển thành
-  provider credit.
-- `DEGRADED`: binding thành `DEGRADED`; challenge bond trả claimant.
-- `BREAKING`: binding thành `QUARANTINED`; challenge bond trả claimant và
-  service credit được trừ từ provider bond.
-- `UNVERIFIABLE`: không slash provider; challenge bond trả claimant.
-
-Credit được giữ trong per-account ledger. `withdraw_credit` trừ ledger rồi phát
-external `EthSend` value transfer tới caller.
-
-### Cure
-
-Provider của binding có thể:
-
-1. submit cure gắn với parent verdict;
-2. thêm allowlisted cure evidence;
-3. top up bond nếu bond không còn đủ;
-4. yêu cầu validator adjudicate cure.
-
-Binding chỉ trở lại `ACTIVE` nếu consensus trả `CURED` và provider bond đã đủ
-service credit cho incident tiếp theo.
-
-### Access control và invariants
-
-Direct tests hiện chứng minh:
-
-- chỉ provider cấu hình/activate/deprecate covenant của mình;
-- chỉ designated integrator accept binding;
-- chỉ integrator hoặc watcher mở case;
-- chỉ provider submit cure/top-up;
-- one active case và one active cure trên mỗi binding;
-- binding/case isolation;
-- source allowlist;
-- không adjudicate/settle cùng case hai lần;
-- provider bond không bị trừ cho verdict không punitive;
-- settlement bị cap bởi provider bond;
-- close binding chuyển bond còn lại thành credit của provider;
-- rút vượt credit bị revert.
-
-### Consumer enforcement và subscriber message
-
-`ToolRouterGuard` là consumer contract độc lập, không phải một bảng hiển thị:
-
-- chỉ nhận `on_covenant_status` từ đúng covenant contract và đúng `binding_id`;
-- xử lý notification theo `verdict_id` idempotently;
-- chặn route khi trạng thái là `QUARANTINED` hoặc `CLOSED`;
-- chặn `DEGRADED` theo mặc định, nhưng owner có thể chọn policy cho phép;
-- chỉ operator được cấu hình mới có thể ghi route record;
-- lưu route record có `request_id`, `tool_id`, operator, covenant status và
-  verdict đã áp dụng.
-
-Direct test của primitive đã chứng minh verdict breaking phát một finalized
-`PostMessage` với calldata `on_covenant_status(binding_id, verdict_id,
-"QUARANTINED")`. Direct tests của consumer chứng minh authorization,
-idempotency, quarantine và cure/restore. Hai phía đã được kiểm thử độc lập;
-delivery giữa hai contract trên một network vẫn cần real evidence.
-
-### Frontend lifecycle
-
-Trang `/covenant` dùng GenLayer client thật để:
-
-- đọc covenant, binding, case, verdict, violations và withdrawable credit;
-- tạo/activate covenant và thêm guarantee/source;
-- offer/accept binding với GEN value;
-- mở case, thêm public observation và gọi validator adjudication;
-- submit cure, top-up bond, adjudicate cure và withdraw credit;
-- estimate write fee, gửi transaction, chờ `decided`, rồi chờ `finalized`;
-- resume finality tracking bằng transaction hash;
-- refresh lại canonical contract state sau finalization.
-
-Trang không tạo contract address, transaction hash, wallet signature hoặc state
-giả trong `localStorage`. Khi
-`NEXT_PUBLIC_COVENANT_CONTRACT_ADDRESS` chưa được cấu hình, trang hiển thị
-`NOT CONFIGURED` và khóa các hành động onchain.
-
-## Verification đã chạy
-
-Lệnh:
+Run:
 
 ```powershell
 npm run check
 ```
 
-Kết quả:
+The check script:
+
+1. validates both contracts with `genvm-lint`;
+2. runs `tests/direct` with pytest/genlayer-test.
+
+Latest workspace result:
 
 - `SemanticInterfaceCovenant`: lint pass;
 - `ToolRouterGuard`: lint pass;
 - 21 direct tests pass;
-- không có test fail hoặc xfail;
-- frontend TypeScript `tsc --noEmit` pass;
-- Next.js production build pass.
+- no failing or xfail tests.
 
-Riêng IDEA-001:
+Coverage includes bilateral acceptance, isolation, access control, URL
+boundary, bond accounting, all verdict classes, validator replay, malicious
+leader fingerprint, prompt-injection output normalization, cure/top-up,
+external withdrawal emission, finalized subscriber message, consumer
+authorization, idempotency, and route enforcement.
 
-```text
-14 SemanticInterfaceCovenant tests passed
-7 ToolRouterGuard tests passed
-```
+## Studionet evidence
 
-Coverage gồm bilateral acceptance, isolation, access control, URL boundary,
-bond accounting, all verdict classes, validator replay, malicious leader
-fingerprint, prompt-injection output normalization, cure/top-up và external
-withdrawal emission, finalized subscriber message, consumer authorization,
-idempotency và route enforcement.
+The deployed lifecycle proves:
 
-Visual QA local tại `http://localhost:3100/covenant` đã pass. Browser thực hiện
-ba view calls và hiển thị đúng canonical Studionet state: covenant `active`,
-binding `ACTIVE`, case `RESOLVED` và verdict
-`BREAKING/CRITICAL/SUFFICIENT` vi phạm `method-key`. Không có console error.
-Snapshot đọc được ghi trong network evidence; đây là read evidence, không được
-trình bày như browser-signed transaction evidence.
+- primitive and consumer deployment by user wallets;
+- two independent EOAs signing provider/integrator actions;
+- transaction lifecycle to `FINALIZED`;
+- live web/LLM consensus for `BREAKING` and `CURED`;
+- finalized subscriber delivery changing guard state
+  `ACTIVE -> QUARANTINED -> ACTIVE`;
+- route rejection during quarantine and route acceptance after cure;
+- payable bond settlement and withdrawal increasing integrator balance by
+  `1.1 GEN`.
 
-## Đã chứng minh trên Studionet
+Still not claimed:
 
-- primitive và consumer deployment bằng ví người dùng;
-- hai EOA độc lập ký provider/integrator actions;
-- transaction lifecycle tới `FINALIZED`;
-- live web/LLM consensus cho `BREAKING` và `CURED`;
-- finalized subscriber delivery đổi guard `ACTIVE → QUARANTINED → ACTIVE`;
-- guard chặn route khi quarantine và nhận route trở lại sau cure;
-- payable bond settlement và withdrawal làm số dư integrator tăng `1.1 GEN`.
+- Asimov or Bradbury deployment/lifecycle;
+- external adopter beyond the reference consumer.
 
-Các mục dưới đây vẫn là `PENDING_REAL_EVIDENCE`:
+## Known gaps
 
-- browser-wallet write trực tiếp từ frontend;
-- deployment/lifecycle trên Asimov hoặc Bradbury;
-- external adopter.
-
-Frontend đã được cấu hình deployed address, đọc canonical state và dùng đúng
-GenLayerJS `status: "ACCEPTED"|"FINALIZED"` lifecycle. Production build đã
-pass; browser-signed write vẫn được giữ riêng là evidence còn thiếu.
-
-## Khoảng cách so với specification
-
-Implementation hiện tại chưa có:
-
-- immutable content hash/snapshot cho baseline document;
+- immutable content hash/snapshot for baseline documents;
 - indexer;
 - external adopter;
-- pagination cursor; các list view hiện bounded bằng hard limit nhỏ;
-- cơ chế DNS-level chống rebinding ngoài URL validation mà contract tự thực
-  hiện.
+- pagination cursor; current list views use small bounded limits;
+- DNS-level anti-rebinding beyond contract-level URL validation.
 
-Nếu GenVM web access không thể bảo đảm network-level SSRF boundary trong môi
-trường triển khai, live arbitrary observation phải tiếp tục bị giới hạn vào
-provider domains đã đăng ký và không được quảng bá là một general-purpose web
-fetcher.
+If GenVM web access cannot guarantee network-level SSRF boundaries in a target
+environment, live arbitrary observation should remain restricted to registered
+provider domains and must not be advertised as a general-purpose web fetcher.
 
-## Ranh giới validation
+## Validation boundary
 
-Dự án đã đạt `VALIDATED` cho hạng mục **Intelligent Contracts** vì primitive và
-consumer đã được deploy trên Studionet; validator consensus trực tiếp quyết
-định `BREAKING/CRITICAL` và `CURED`; subscriber thay đổi enforcement state;
-route bị chặn/khôi phục; settlement và withdrawal được xác minh bằng canonical
-state, receipt và balance evidence.
-
-Các mục sau vẫn là `PENDING_REAL_EVIDENCE` nếu muốn nâng tuyên bố lên hạng mục
-**Projects** hoặc production adoption:
-
-1. browser-wallet write lifecycle hoàn chỉnh qua frontend;
-2. UI evidence cho failure/retry/finalization;
-3. external adopter ngoài reference consumer;
-4. deployment/lifecycle trên Asimov hoặc Bradbury.
-
-Không được dùng trạng thái `VALIDATED` của Intelligent Contracts để ngầm tuyên
-bố rằng các mục Project-grade trên đã hoàn thành.
+This repository is valid for the **Intelligent Contracts** contribution type
+because it is contract-focused and excludes application frontend code. The
+verified surface is the reusable primitive, its reference consumer, direct
+tests, deployment script, and Studionet evidence.

@@ -395,7 +395,7 @@ idempotent theo `verdict_id`.
 
 Hai cách tích hợp:
 
-1. **Pull:** consumer/frontend gọi `get_binding_status(binding_id)` trước khi
+1. **Pull:** consumer/client gọi `get_binding_status(binding_id)` trước khi
    dùng dependency.
 2. **Push:** binding đăng một subscriber IC; verdict finalized gửi
    `on_covenant_status(binding_id, verdict_id, new_status)`.
@@ -432,7 +432,7 @@ get_covenant_binding_ids(covenant_id, offset, limit)
 ```
 
 Danh sách phải phân trang/bounded. Không có method nhận raw verdict JSON từ
-frontend.
+caller.
 
 ## 14. Access control và invariants
 
@@ -526,7 +526,7 @@ coi đó là operational risk nhưng contract không tự gán `BREAKING`.
 
 1. Wallet ký `accept_binding` với GEN thật trong môi trường được chọn.
 2. UI theo dõi pending → accepted → finalized.
-3. UI đọc lại covenant/binding từ contract, không dùng localStorage làm nguồn
+3. Client đọc lại covenant/binding từ contract, không dùng cache local làm nguồn
    sự thật.
 4. Mở case, adjudicate, đọc verdict onchain.
 5. Xác minh binding chuyển `QUARANTINED`.
@@ -577,12 +577,11 @@ Nếu implementation thiếu một hàng, README không được giữ claim tư
 | Reuse | `PASS ở mức thiết kế` | Binding/view/subscriber interface áp dụng cho nhiều tool/API |
 | Differentiation | `PASS theo khảo sát 2026-07-26` | Không trùng fingerprint legacy hoặc public analogues đã khảo sát |
 | Claim-to-code | `PASS ở mức spec` | Matrix đã khóa; phải kiểm lại sau implementation |
-| Full lifecycle | `PASS CHO INTELLIGENT CONTRACTS / PROJECT FRONTEND WRITE PENDING` | Primitive, consumer, hai ví, consensus web/LLM, quarantine, cure, route enforcement và withdrawal đều đã finalized; browser-wallet write chỉ còn là điều kiện nếu nộp ở cấp Project |
-| Scope honesty | `PASS` | Tách rõ local verification, Studionet evidence, frontend code verification và phần browser/external adoption còn thiếu |
+| Full lifecycle | `PASS CHO INTELLIGENT CONTRACTS` | Primitive, consumer, hai ví, consensus web/LLM, quarantine, cure, route enforcement và withdrawal đều đã finalized |
+| Scope honesty | `PASS` | Tách rõ local verification, Studionet evidence và phần external adoption còn thiếu |
 
-Vòng đời contract đã đủ bằng chứng cho hạng mục Intelligent Contracts. Không
-được suy rộng thành Project-grade browser lifecycle khi write evidence còn
-thiếu.
+Vòng đời contract đã đủ bằng chứng kỹ thuật cho primitive, và repository hiện
+tại là contract-focused nên phù hợp nộp hạng mục Intelligent Contracts.
 
 ## 20. Adoption path
 
@@ -618,7 +617,7 @@ Dừng hoặc thu hẹp ý tưởng nếu:
 - GenVM không thể giới hạn fetch đủ an toàn cho source model v1;
 - không thể tạo consumer thật dùng status/message;
 - settlement chỉ còn là con số hiển thị, không chuyển value;
-- frontend không đọc state onchain;
+- client không đọc state onchain;
 - chỉ có một provider tự tạo case và tự hưởng lợi, không còn trust conflict;
 - không tìm được ít nhất một builder/use case bên ngoài demo có nhu cầu tích
   hợp;
@@ -637,12 +636,9 @@ Dừng hoặc thu hẹp ý tưởng nếu:
   bonds, nondeterministic adjudication, custom equivalence, cure và withdrawal;
 - consumer contract `ToolRouterGuard` với authorization, idempotent finalized
   notification và route enforcement;
-- frontend `/covenant` dùng GenLayer SDK thật cho read/write và lifecycle
-  `submitted → decided → finalized`, không dùng localStorage làm state giả;
 - 14 direct tests cho primitive và 7 direct tests cho consumer;
 - `npm run check` pass ngày 2026-07-26: hai contract dự án lint sạch, 21 direct
-  tests pass, không có fail/xfail, frontend typecheck và production build pass.
-- visual QA local `/covenant` pass, không có browser console warning/error.
+  tests pass, không có fail/xfail.
 - primitive deployed tại
   `0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570` và consumer guard tại
   `0xA58132c068E0406E2d5d43E8b72E2b2361ac057D`;
@@ -660,14 +656,12 @@ Dừng hoặc thu hẹp ý tưởng nếu:
 
 Chưa có:
 
-- một browser-wallet write được thực hiện trực tiếp qua frontend đã cấu hình
-  deployed address;
 - Asimov/Bradbury evidence;
 - external adopter.
 
-Vì vậy trạng thái hiện tại là `VALIDATED` cho hạng mục Intelligent Contracts.
-Browser-wallet lifecycle, Asimov/Bradbury và external adoption vẫn là
-`PENDING_REAL_EVIDENCE` và ngăn mọi tuyên bố ở cấp Project.
+Vì vậy trạng thái hiện tại là `VALIDATED` cho phần contract lifecycle và
+repository-level submission là **Intelligent Contracts**. Asimov/Bradbury và
+external adoption vẫn là `PENDING_REAL_EVIDENCE`.
 
 Runbook cho deployment và real evidence:
 [DEPLOYMENT.md](DEPLOYMENT.md).
@@ -679,4 +673,3 @@ Runbook cho deployment và real evidence:
 - [Messages](https://docs.genlayer.com/developers/intelligent-contracts/features/messages)
 - [Non-determinism](https://docs.genlayer.com/developers/intelligent-contracts/features/non-determinism)
 - [Prompt Injection](https://docs.genlayer.com/developers/intelligent-contracts/security-and-best-practices/prompt-injection)
-- [GenHub Projects](https://community.genhub.fun/projects)

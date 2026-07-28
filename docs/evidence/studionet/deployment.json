@@ -4,26 +4,6 @@
   "rpc": "https://studio.genlayer.com/api",
   "explorer": "https://explorer-studio.genlayer.com",
   "walletAddress": "0xC495ef51618D03267A1f227aFe5b27B38c748272",
-  "frontendBrowserRead": {
-    "url": "http://localhost:3100/covenant",
-    "readAt": "2026-07-26T16:16:06.049Z",
-    "contractAddress": "0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570",
-    "covenantId": "genlayer-js-calldata-v1",
-    "covenantActive": true,
-    "bindingId": "binding-1",
-    "bindingStatus": "ACTIVE",
-    "caseId": "case-calldata-method-key",
-    "caseStatus": "RESOLVED",
-    "verdictId": "verdict-case-calldata-method-key",
-    "compatibilityClass": "BREAKING",
-    "severityBand": "CRITICAL",
-    "sourceCoverage": "SUFFICIENT",
-    "violatedGuaranteeIds": [
-      "method-key"
-    ],
-    "consoleErrors": 0,
-    "browserWalletWrite": "PENDING_CONNECTOR_AND_WALLET"
-  },
   "primitive": {
     "contractAddress": "0x05b27207c7aC50d22E5C1afBfD3c20DBccCa0570",
     "transactionHash": "0xd6cc527f3e0382c41da91e235d969b632bcb023a082bae8c6e1e921c22b48a47",
